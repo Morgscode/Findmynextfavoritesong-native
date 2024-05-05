@@ -13,6 +13,7 @@ type TrackFeatures = {
 }
 
 type AppState = {
+    isLoggedIn: boolean;
     token: null | string;
     seedTrackID: null | string;
     seedArtistID: null | string;
@@ -21,6 +22,7 @@ type AppState = {
 }
 
 export const state: AppState = {
+      isLoggedIn: false,
       token: null,
       seedTrackID: null,
       seedArtistID: null,
