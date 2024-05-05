@@ -31,6 +31,10 @@
         "projectId": "58766482-96da-43f3-81c1-235fd6d5b0a5"
       }
     },
-    "owner": "lukemakesthings"
+    "owner": "lukemakesthings",
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "spotifymusicsampler-scheme"
   }
 }
