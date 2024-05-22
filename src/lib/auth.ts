@@ -18,5 +18,4 @@ export function login(hash: string) {
     const params = new URLSearchParams(hash);
     state.token = params.get("#access_token");
     state.isLoggedIn = true;
-    console.log(state);
 }

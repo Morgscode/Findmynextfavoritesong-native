@@ -1,10 +1,10 @@
 import { Slot } from 'expo-router';
 import * as Linking from "expo-linking";
+import { StatusBar } from 'expo-status-bar';
 import { login } from "@src/lib/auth";
 import { state } from "@src/lib/state";
 
 export default function Layout() {
-    console.log(JSON.stringify(state, null, 2));
     const url = Linking.useURL();
     if (url && !state.isLoggedIn) {
         const { host, hash } = new URL(url);
@@ -12,5 +12,10 @@ export default function Layout() {
             login(hash);
         }
     }
-    return <Slot />;
+    return (
+    <>
+    <Slot />
+    <StatusBar />
+    </>
+    );
 }
