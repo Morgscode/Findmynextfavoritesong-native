@@ -1,11 +1,12 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
+import AppView from "@src/components/AppView";
 import AppLinkButton from '@src/components/AppLinkButton';
 import { getSpotifyAuthUrl } from '@src/lib/auth';
 import { state } from '@src/lib/state';
 
-export default function App() {
+export default function App() { 
 
   const link = () => {
     if (!state.isLoggedIn) {
@@ -17,7 +18,7 @@ export default function App() {
   }
   
   return (
-    <View className="flex-1 items-center justify-center bg-gray-900">
+    <AppView>
       <Text className="text-gray-400 text-center p-4">
         Find my next favorite song lets you sample music 
         from over 100 genres based on your current top tracks, 
@@ -25,6 +26,6 @@ export default function App() {
       </Text>
       {link()}
       <StatusBar />
-    </View>
+    </AppView>
   );
 }
