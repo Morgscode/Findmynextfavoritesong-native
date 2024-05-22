@@ -6,7 +6,7 @@ const AUTH_SCOPES = "user-read-email%20user-top-read%20user-library-read%20user-
 
 export function getSpotifyAuthUrl() {
 
-    const appReturnUrl = Linking.createURL('login');
+    const appReturnUrl = Linking.createURL('/');
 
     return AUTH_URL
     .replace("<<<CLIENT_ID>>>", process.env.EXPO_PUBLIC_CLIENT_ID as string)
