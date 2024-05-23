@@ -1,15 +1,15 @@
 type TrackFeatures = {
-    acousticness: null,
-    danceability: null,
-    energy: null,
-    instrumentalness: null,
-    key: null,
-    liveness: null,
-    loudness: null,
-    mode: null,
-    speechiness: null,
-    tempo: null,
-    valence: null,
+    acousticness: null | number,
+    danceability: null | number,
+    energy: null | number,
+    instrumentalness: null | number,
+    key: null | number,
+    liveness: null | number,
+    loudness: null | number,
+    mode: null | number,
+    speechiness: null | number,
+    tempo: null | number,
+    valence: null | number,
 }
 
 type AppState = {
