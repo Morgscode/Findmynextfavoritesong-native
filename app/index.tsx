@@ -1,14 +1,24 @@
 import React from 'react';
 import { Text, View, Pressable } from 'react-native';
 import { Link } from "expo-router";
+import * as Linking from "expo-linking";
 import { getSpotifyAuthUrl } from '@src/lib/auth';
-import { state } from '@src/lib/state';
+import { useAuthContext } from "@src/context/AuthContext";
 
 export default function App() { 
+  const { state, dispatch } = useAuthContext();
 
-  console.log(JSON.stringify(state, null, 2));
+  const url = Linking.useURL();
 
-  const link = () => {
+  if (url && !state.isLoggedIn) {
+      const { hash } = new URL(url);
+      if (hash && hash.startsWith("#access_token")) {
+          dispatch({type: 'SET_TOKEN', payload: hash});
+          dispatch({type: 'LOGIN'});
+      }
+  }
+
+  const action = () => {
     if (!state.isLoggedIn) {
       return (
         <Link href={getSpotifyAuthUrl()} asChild>
@@ -34,8 +44,7 @@ export default function App() {
         from over 100 genres based on your current top tracks, 
         your own personal taste and mood.
       </Text>
-      {link()}
-     
+      {action()}
     </View>
   );
 }
