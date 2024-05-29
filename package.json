@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "expo": "^51.0.8",
@@ -41,6 +42,11 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "commitlint": {
+    "extends": [
+      "./node_modules/@commitlint/config-conventional"
+    ]
   },
   "private": true
 }
