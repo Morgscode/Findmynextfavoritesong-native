@@ -1,7 +1,5 @@
 import * as Linking from "expo-linking";
 
-let stuff: string;
-
 const AUTH_URL =
   "https://accounts.spotify.com/authorize?client_id=<<<CLIENT_ID>>>&redirect_uri=<<<REDIRECT_URI>>>&scope=<<<SCOPES>>>&response_type=token";
 const AUTH_SCOPES =
