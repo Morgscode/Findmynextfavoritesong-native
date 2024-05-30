@@ -10,7 +10,7 @@ export function getSpotifyAuthUrl() {
 
   return AUTH_URL.replace(
     "<<<CLIENT_ID>>>",
-    process.env.EXPO_PUBLIC_CLIENT_ID as string,
+    process.env.EXPO_PUBLIC_CLIENT_ID ?? "client id not set",
   )
     .replace("<<<REDIRECT_URI>>>", appReturnUrl)
     .replace("<<<SCOPES>>>", AUTH_SCOPES);
