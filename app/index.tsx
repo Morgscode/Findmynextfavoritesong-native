@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, Pressable } from "react-native";
 import { Link } from "expo-router";
 import * as Linking from "expo-linking";
-import { getSpotifyAuthUrl } from "@src/lib/auth";
+import { getSpotifyAuthUrl } from "@src/lib/spotify";
 import { useAuthContext } from "@src/context/AuthContext";
 
 export default function App() {
@@ -39,7 +39,7 @@ export default function App() {
 
   return (
     <View className="flex-1 items-center justify-center bg-gray-900">
-      <Text className="text-gray-400 text-center p-4">
+      <Text className="text-gray-400 text-center p-8">
         Find my next favorite song lets you sample music from over 100 genres
         based on your current top tracks, your own personal taste and mood.
       </Text>
