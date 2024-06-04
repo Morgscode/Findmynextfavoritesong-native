@@ -18,6 +18,7 @@ export default [
   {
     rules: {
       semi: "warn",
+      "no-console": "error",
     },
   },
 ];
