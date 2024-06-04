@@ -7,26 +7,55 @@ const AUTH_SCOPES =
 const BASE_URL = "https://api.spotify.com/v1";
 const TRACKS_ENDPOINT = "/me/top/tracks";
 
-export type SpotifyImage = {
+type SpotifyImage = {
   height: number;
   width: number;
   url: string;
 };
 
-export type SpotifyTrack = {
-  name: string;
-  previewUrl: string;
-  id: string;
-  uri: string;
-  images: Array<SpotifyImage>;
+type Album = {
+  "album type": string;
+  artists: Array<Record<string, string>>;
+  "available markets": Array<string>;
+  "external urls": Record<string, string>;
   href: string;
-  "is local": boolean;
-  popularity: number;
-  "track number": number;
+  id: string;
+  images: Array<SpotifyImage>;
+  name: string;
+  "release date": string;
+  "release day precision": string;
+  "total tracks": number;
   type: string;
-  explicit: boolean;
+  uri: string;
+};
+
+type Artist = {
+  "external urls": Record<string, string>;
+  href: string;
+  id: string;
+  name: string;
+  type: string;
+  uri: string;
+};
+
+export type SpotifyTrack = {
+  album: Album;
+  artists: Array<Artist>;
+  "available markets": Array<string>;
   "duration ms": number;
   "disc number": number;
+  "external urls": Record<string, string>;
+  "external ids": Record<string, string>;
+  explicit: boolean;
+  href: string;
+  id: string;
+  "is local": boolean;
+  name: string;
+  popularity: number;
+  previewUrl: string;
+  "track number": number;
+  type: string;
+  uri: string;
 };
 
 export function getSpotifyAuthUrl() {
