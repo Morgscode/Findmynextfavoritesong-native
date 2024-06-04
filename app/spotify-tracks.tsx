@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  View,
   SafeAreaView,
   Text,
   ActivityIndicator,
@@ -7,6 +8,7 @@ import {
   Pressable,
   type NativeScrollEvent,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import SpotifyTrack from "@src/components/SpotifyTrack";
 import TrackPlayer from "@src/components/TrackPlayer";
 import { useAuthContext } from "@src/context/AuthContext";
@@ -27,12 +29,12 @@ export default function SpotifyTracks() {
   async function getTracks(url: string | null = null) {
     setLoading(true);
     const { tracks, next } = await getTopTracks(state.token!, url);
-    setTracks((topTracks) => [...topTracks.slice(), ...tracks]);
+    setTracks((topTracks) => [...topTracks, ...tracks]);
     setNext(next);
     setLoading(false);
   }
 
-  async function handleEndReached() {
+  async function handleListEndReached() {
     await getTracks(next);
   }
 
@@ -52,8 +54,8 @@ export default function SpotifyTracks() {
 
   if (tracks.length === 0) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-gray-900">
-        <Text className="text-gray-400 mb-8">
+      <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
+        <Text className="text-2xl text-gray-400 mb-8">
           Fetching your current top tracks...
         </Text>
         <ActivityIndicator size="large" color="#1DB954" />
@@ -62,17 +64,22 @@ export default function SpotifyTracks() {
   }
 
   return (
-    <SafeAreaView className="relative flex-1 bg-gray-900 h-screen w-screen">
-      <Text className="text-gray-400 p-4">
-        These are your current top tracks. Choose one of them to sample similar
-        music.
-      </Text>
+    <SafeAreaView className="relative flex-1 bg-[#191414] h-screen w-screen">
+      <View className="p-4">
+        <Text className="text-gray-400 text-2xl mb-4">
+          These are your current top tracks.
+        </Text>
+        <Text className="text-gray-400">
+          Choose one of them to sample similar music.
+        </Text>
+      </View>
       <ScrollView
         onScroll={({ nativeEvent }) => {
-          isCloseToBottom(nativeEvent) && !loading && handleEndReached();
+          isCloseToBottom(nativeEvent) && !loading && handleListEndReached();
         }}
         scrollEventThrottle={500}
         className="px-4 pb-[50px]"
+        indicatorStyle="white"
       >
         {tracks.map((track) => (
           <Pressable key={track.id} onPress={() => setSelectedTrack(track)}>
@@ -81,6 +88,7 @@ export default function SpotifyTracks() {
         ))}
       </ScrollView>
       {selectedTrack && <TrackPlayer {...selectedTrack} />}
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 }

@@ -1,10 +1,11 @@
 {
-    "extends": "@tsconfig/react-native/tsconfig.json",
-    "compilerOptions": {
-        "types": ["node"],
-        "baseUrl": ".",
-        "paths": {
-            "@src/*": ["./src/*"]
-        }
-    }
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["./src/*"]
+    },
+    "esModuleInterop": true
+  }
 }

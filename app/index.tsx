@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Text, SafeAreaView, Pressable } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { Link } from "expo-router";
 import * as Linking from "expo-linking";
 import { getSpotifyAuthUrl } from "@src/lib/spotify";
@@ -39,12 +40,13 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-gray-900">
-      <Text className="text-gray-400 text-center p-4">
+    <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
+      <Text className="text-gray-400 text-center text-2xl p-8 mb-4">
         Find my next favorite song lets you sample music from over 100 genres
         based on your current top tracks, your own personal taste and mood.
       </Text>
       {action()}
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 }
