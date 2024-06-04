@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, Pressable } from "react-native";
 import { Link } from "expo-router";
 import * as Linking from "expo-linking";
@@ -9,13 +9,15 @@ export default function App() {
   const { state, dispatch } = useAuthContext();
   const url = Linking.useURL();
 
-  if (url && !state.isLoggedIn) {
-    const { hash } = new URL(url);
-    if (hash && hash.startsWith("#access_token")) {
-      dispatch({ type: "SET_TOKEN", payload: hash });
-      dispatch({ type: "LOGIN" });
+  useEffect(() => {
+    if (url && !state.isLoggedIn) {
+      const { hash } = new URL(url);
+      if (hash && hash.startsWith("#access_token")) {
+        dispatch({ type: "SET_TOKEN", payload: hash });
+        dispatch({ type: "LOGIN" });
+      }
     }
-  }
+  }, [url]);
 
   const action = () => {
     if (!state.isLoggedIn) {
