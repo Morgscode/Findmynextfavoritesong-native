@@ -12,7 +12,7 @@ export default function Layout() {
   return (
     <AuthProvider>
       <Slot />
-      <StatusBar />
+      <StatusBar style="light" />
     </AuthProvider>
   );
 }
