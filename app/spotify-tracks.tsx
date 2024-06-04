@@ -13,7 +13,6 @@ export default function SpotifyTracks() {
 
   async function getTracks() {
     const tracks = await getTopTracks(state.token!);
-    console.log(JSON.stringify(tracks[0], null, 2));
     setTracks(tracks);
   }
 
