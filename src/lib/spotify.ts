@@ -7,8 +7,18 @@ const AUTH_SCOPES =
 const BASE_URL = "https://api.spotify.com/v1";
 const TRACKS_ENDPOINT = "/me/top/tracks";
 
+export type SpotifyImage = {
+  height: number;
+  width: number;
+  url: string;
+};
+
 export type SpotifyTrack = {
-  title: string;
+  name: string;
+  previewUrl: string;
+  id: string;
+  uri: string;
+  images: Array<SpotifyImage>;
 };
 
 export function getSpotifyAuthUrl() {
@@ -31,8 +41,8 @@ export async function getTopTracks(token: string) {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
-    return (await response.json()) as Array<SpotifyTrack>;
+    const body = await response.json();
+    return body?.items as Array<SpotifyTrack>;
   } catch (error) {
     console.error(error);
     return [];

@@ -7,7 +7,6 @@ import { useAuthContext } from "@src/context/AuthContext";
 
 export default function App() {
   const { state, dispatch } = useAuthContext();
-
   const url = Linking.useURL();
 
   if (url && !state.isLoggedIn) {
