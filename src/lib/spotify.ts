@@ -69,9 +69,9 @@ export function getSpotifyAuthUrl() {
     .replace("<<<SCOPES>>>", AUTH_SCOPES);
 }
 
-export async function getTopTracks(token: string) {
+export async function getTopTracks(token: string, url: string | null = null) {
   try {
-    const response = await fetch(`${BASE_URL}${TRACKS_ENDPOINT}`, {
+    const response = await fetch(url ?? `${BASE_URL}${TRACKS_ENDPOINT}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -79,9 +79,16 @@ export async function getTopTracks(token: string) {
       },
     });
     const body = await response.json();
-    return body?.items as Array<SpotifyTrack>;
+    return {
+      tracks: body?.items as Array<SpotifyTrack>,
+      next: body?.next || null,
+    };
   } catch (error) {
+    // eslint-disable-next-line
     console.error(error);
-    return [];
+    return {
+      tracks: [],
+      next: null,
+    };
   }
 }
