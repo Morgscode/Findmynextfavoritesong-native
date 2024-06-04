@@ -19,6 +19,14 @@ export type SpotifyTrack = {
   id: string;
   uri: string;
   images: Array<SpotifyImage>;
+  href: string;
+  "is local": boolean;
+  popularity: number;
+  "track number": number;
+  type: string;
+  explicit: boolean;
+  "duration ms": number;
+  "disc number": number;
 };
 
 export function getSpotifyAuthUrl() {
