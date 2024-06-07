@@ -1,54 +1,99 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, Pressable } from "react-native";
-import { Audio } from "expo-av";
+import { Audio, AVPlaybackStatus } from "expo-av";
 import { type SpotifyTrack } from "@src/lib/spotify";
 
 export default function TrackPlayer({
-  id,
   name,
   album,
   artists,
   preview_url,
 }: SpotifyTrack) {
-  const [paused, setPaused] = useState<boolean>(true);
   const [sound, setSound] = useState<Audio.Sound>(new Audio.Sound());
-
-  const icon = paused
-    ? require("../../assets/play.png")
-    : require("../../assets/pause.png");
+  const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
+  const [icon, setIcon] = useState<string>("../../assets/play.png");
 
   async function getSound() {
     try {
-      if (!preview_url || !name || !id) return;
-      const { sound } = await Audio.Sound.createAsync(
+      const { sound, status } = await Audio.Sound.createAsync(
         { uri: preview_url },
-        { shouldPlay: true },
+        { shouldPlay: false },
+        (playbackStatus: AVPlaybackStatus) => {
+          if (!playbackStatus.isLoaded) {
+            // Update your UI for the unloaded state
+            setIcon("../../assets/pause.png");
+            if (playbackStatus.error) {
+              //eslint-disable-next-line
+              console.error(
+                `Encountered a fatal error during playback: ${playbackStatus.error}`,
+              );
+              // Send Expo team the error on Slack or the forums so we can help you debug!
+            }
+          } else {
+            // Update your UI for the loaded state
+
+            if (playbackStatus.isPlaying) {
+              // Update your UI for the playing state
+              setIcon("../../assets/pause.png");
+            } else {
+              // Update your UI for the paused state
+            }
+
+            if (playbackStatus.isBuffering) {
+              // Update your UI for the buffering state
+            }
+
+            if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+              // The player has just finished playing and will stop. Maybe you want to play something else?
+              setIcon("../../assets/play.png");
+            }
+          }
+        },
+        true,
       );
+      setStatus(status);
       setSound(sound);
-      setPaused(false);
+      const playStatus = await sound.playAsync();
+      setStatus(playStatus);
     } catch (error) {
       //eslint-disable-next-line
       console.error(error);
     }
   }
 
-  useEffect(() => {
-    getSound();
-  }, []);
+  async function unloadSound() {
+    const status = await sound.unloadAsync();
+    setStatus(status);
+  }
 
-  useEffect(() => {
-    getSound();
-  }, [preview_url]);
+  async function getAndPlaySound() {
+    try {
+      await unloadSound();
+      await getSound();
+    } catch (error) {
+      //eslint-disable-next-line
+      console.error(error);
+    }
+  }
 
   async function toggle() {
-    if (paused) {
-      await sound?.playAsync();
-    } else {
-      // paused
-      await sound?.pauseAsync();
+    if (status && status.isLoaded && status.isPlaying === false) {
+      const newStatus = await sound.playAsync();
+      setStatus(newStatus);
+      status && status.isLoaded && status.isPlaying === false;
+    } else if (status && status.isLoaded && status.isPlaying) {
+      const newStatus = await sound.pauseAsync();
+      setIcon("../../assets/play.png");
+      setStatus(newStatus);
     }
-    setPaused(!paused);
   }
+
+  useEffect(() => {
+    getAndPlaySound();
+    return () => {
+      unloadSound();
+    };
+  }, [preview_url]);
 
   return (
     <View
@@ -75,7 +120,7 @@ export default function TrackPlayer({
         <Text style={{ color: "white", fontSize: 12 }}>{artists[0].name}</Text>
       </View>
       <Pressable onPress={() => toggle()} style={{ marginLeft: "auto" }}>
-        <Image source={icon} width={23} />
+        <Image source={require(icon)} width={23} />
       </Pressable>
     </View>
   );
