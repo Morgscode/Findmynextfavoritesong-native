@@ -96,30 +96,18 @@ export default function TrackPlayer({
   }, [preview_url]);
 
   return (
-    <View
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        bottom: 10,
-        alignSelf: "stretch",
-        marginLeft: 16,
-        marginRight: 16,
-        backgroundColor: "#062812",
-        padding: 8,
-      }}
-    >
+    <View className="flex flex-row items-center ml-4 mr-4 bg-[#062812] p-4">
       <Image
         style={{ marginRight: 16 }}
         source={{ uri: album.images[0].url }}
         height={50}
         width={50}
       />
-      <View style={{ display: "flex", gap: 5 }}>
-        <Text style={{ color: "white" }}>{name}</Text>
-        <Text style={{ color: "white", fontSize: 12 }}>{artists[0].name}</Text>
+      <View className="flex gap-2">
+        <Text className="text-white">{name}</Text>
+        <Text className="text-white text-sm">{artists[0].name}</Text>
       </View>
-      <Pressable onPress={() => toggle()} style={{ marginLeft: "auto" }}>
+      <Pressable onPress={() => toggle()} className="ml-auto">
         <Image source={require(icon)} width={23} />
       </Pressable>
     </View>
