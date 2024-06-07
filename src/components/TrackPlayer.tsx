@@ -1,19 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, Pressable } from "react-native";
+import { Audio } from "expo-av";
 import { type SpotifyTrack } from "@src/lib/spotify";
 
-export default function TrackPlayer({ name, album, artists }: SpotifyTrack) {
+export default function TrackPlayer({
+  id,
+  name,
+  album,
+  artists,
+  preview_url,
+}: SpotifyTrack) {
   const [paused, setPaused] = useState<boolean>(true);
+  const [sound, setSound] = useState<Audio.Sound>(new Audio.Sound());
 
   const icon = paused
     ? require("../../assets/play.png")
     : require("../../assets/pause.png");
 
-  function toggle() {
+  async function getSound() {
+    try {
+      if (!preview_url || !name || !id) return;
+      const { sound } = await Audio.Sound.createAsync(
+        { uri: preview_url },
+        { shouldPlay: true },
+      );
+      setSound(sound);
+      setPaused(false);
+    } catch (error) {
+      //eslint-disable-next-line
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getSound();
+  }, []);
+
+  useEffect(() => {
+    getSound();
+  }, [preview_url]);
+
+  async function toggle() {
     if (paused) {
-      // play
+      await sound?.playAsync();
     } else {
       // paused
+      await sound?.pauseAsync();
     }
     setPaused(!paused);
   }

@@ -52,7 +52,7 @@ export type SpotifyTrack = {
   "is local": boolean;
   name: string;
   popularity: number;
-  previewUrl: string;
+  preview_url: string;
   "track number": number;
   type: string;
   uri: string;
