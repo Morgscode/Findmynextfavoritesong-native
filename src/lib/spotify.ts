@@ -15,7 +15,7 @@ type SpotifyImage = {
 
 type Album = {
   "album type": string;
-  artists: Array<Record<string, string>>;
+  artists: Array<Artist>;
   "available markets": Array<string>;
   "external urls": Record<string, string>;
   href: string;

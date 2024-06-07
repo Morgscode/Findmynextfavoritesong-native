@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import SpotifyTrack from "@src/components/SpotifyTrack";
-import TrackPlayer from "@src/components/TrackPlayer";
+import AudioPlayer from "@src/components/AudioPlayer";
 import { useAuthContext } from "@src/context/AuthContext";
 import {
   getTopTracks,
@@ -87,7 +87,7 @@ export default function SpotifyTracks() {
           </Pressable>
         ))}
       </ScrollView>
-      {selectedTrack && <TrackPlayer {...selectedTrack} />}
+      {selectedTrack && <AudioPlayer {...selectedTrack} />}
       <StatusBar style="light" />
     </SafeAreaView>
   );

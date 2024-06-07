@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  type ImageSourcePropType,
+} from "react-native";
 import { Audio, AVPlaybackStatus } from "expo-av";
 import { type SpotifyTrack } from "@src/lib/spotify";
 
-export default function TrackPlayer({
+export default function AudioPlayer({
   name,
   album,
   artists,
   preview_url,
 }: SpotifyTrack) {
-  const [sound, setSound] = useState<Audio.Sound>(new Audio.Sound());
+  const [audio, setAudio] = useState<Audio.Sound>(new Audio.Sound());
   const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
-  const [icon, setIcon] = useState<string>("../../assets/play.png");
 
-  async function getSound() {
+  const [icon, setIcon] = useState<ImageSourcePropType>(
+    // eslint-disable-next-line
+    require("../../assets/play.png"),
+  );
+
+  async function getAudio() {
     try {
       const { sound, status } = await Audio.Sound.createAsync(
         { uri: preview_url },
@@ -21,7 +31,8 @@ export default function TrackPlayer({
         (playbackStatus: AVPlaybackStatus) => {
           if (!playbackStatus.isLoaded) {
             // Update your UI for the unloaded state
-            setIcon("../../assets/pause.png");
+            // eslint-disable-next-line
+            setIcon(require("../../assets/pause.png"));
             if (playbackStatus.error) {
               //eslint-disable-next-line
               console.error(
@@ -34,7 +45,8 @@ export default function TrackPlayer({
 
             if (playbackStatus.isPlaying) {
               // Update your UI for the playing state
-              setIcon("../../assets/pause.png");
+              // eslint-disable-next-line
+              setIcon(require("../../assets/pause.png"));
             } else {
               // Update your UI for the paused state
             }
@@ -45,58 +57,58 @@ export default function TrackPlayer({
 
             if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
               // The player has just finished playing and will stop. Maybe you want to play something else?
-              setIcon("../../assets/play.png");
+              // eslint-disable-next-line
+              setIcon(require("../../assets/play.png"));
             }
           }
         },
         true,
       );
       setStatus(status);
-      setSound(sound);
+      setAudio(sound);
     } catch (error) {
       //eslint-disable-next-line
       console.error(error);
     }
   }
 
-  async function unloadSound() {
-    const status = await sound.unloadAsync();
+  async function unloadAudio() {
+    const status = await audio.unloadAsync();
+    setAudio(new Audio.Sound());
     setStatus(status);
   }
 
-  async function handleSound() {
+  async function prepareAudio() {
     try {
-      await unloadSound();
-      await getSound();
+      await unloadAudio();
+      await getAudio();
     } catch (error) {
       //eslint-disable-next-line
       console.error(error);
     }
   }
 
-  async function toggle() {
+  async function toggleAudio() {
     if (status && status.isLoaded && status.isPlaying === false) {
-      const newStatus = await sound.playAsync();
+      const newStatus = await audio.playAsync();
       setStatus(newStatus);
-      status && status.isLoaded && status.isPlaying === false;
     } else if (status && status.isLoaded && status.isPlaying) {
-      const newStatus = await sound.pauseAsync();
-      setIcon("../../assets/play.png");
+      const newStatus = await audio.pauseAsync();
       setStatus(newStatus);
+      // eslint-disable-next-line
+      setIcon(require("../../assets/play.png"));
     }
   }
 
   useEffect(() => {
-    if (preview_url) {
-      handleSound();
-    }
+    preview_url && prepareAudio();
     return () => {
-      unloadSound();
+      unloadAudio();
     };
   }, [preview_url]);
 
   return (
-    <View className="flex flex-row items-center ml-4 mr-4 bg-[#062812] p-4">
+    <View className="flex flex-row items-center ml-4 mr-4 bg-[#062812] p-2">
       <Image
         style={{ marginRight: 16 }}
         source={{ uri: album.images[0].url }}
@@ -107,8 +119,8 @@ export default function TrackPlayer({
         <Text className="text-white">{name}</Text>
         <Text className="text-white text-sm">{artists[0].name}</Text>
       </View>
-      <Pressable onPress={() => toggle()} className="ml-auto">
-        <Image source={require(icon)} width={23} />
+      <Pressable onPress={() => toggleAudio()} className="ml-auto">
+        <Image source={icon} width={35} />
       </Pressable>
     </View>
   );
