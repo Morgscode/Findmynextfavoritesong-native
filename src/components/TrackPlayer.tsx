@@ -17,7 +17,7 @@ export default function TrackPlayer({
     try {
       const { sound, status } = await Audio.Sound.createAsync(
         { uri: preview_url },
-        { shouldPlay: false },
+        { shouldPlay: true },
         (playbackStatus: AVPlaybackStatus) => {
           if (!playbackStatus.isLoaded) {
             // Update your UI for the unloaded state
@@ -53,8 +53,6 @@ export default function TrackPlayer({
       );
       setStatus(status);
       setSound(sound);
-      const playStatus = await sound.playAsync();
-      setStatus(playStatus);
     } catch (error) {
       //eslint-disable-next-line
       console.error(error);
@@ -66,7 +64,7 @@ export default function TrackPlayer({
     setStatus(status);
   }
 
-  async function getAndPlaySound() {
+  async function handleSound() {
     try {
       await unloadSound();
       await getSound();
@@ -89,7 +87,9 @@ export default function TrackPlayer({
   }
 
   useEffect(() => {
-    getAndPlaySound();
+    if (preview_url) {
+      handleSound();
+    }
     return () => {
       unloadSound();
     };
