@@ -11,11 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "UIBackgroundModes": ["audio"]
     },
     "android": {
       "adaptiveIcon": {
@@ -32,9 +31,7 @@
       }
     },
     "owner": "lukemakesthings",
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router", "expo-asset"],
     "scheme": "spotifymusicsampler"
   }
 }
