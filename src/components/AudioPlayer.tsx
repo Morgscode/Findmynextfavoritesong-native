@@ -17,7 +17,6 @@ export default function AudioPlayer({
 }: SpotifyTrack) {
   const [audio, setAudio] = useState<Audio.Sound>(new Audio.Sound());
   const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
-
   const [icon, setIcon] = useState<ImageSourcePropType>(
     // eslint-disable-next-line
     require("../../assets/play.png"),
