@@ -59,6 +59,7 @@ export default function SpotifyTracks() {
           Fetching your current top tracks...
         </Text>
         <ActivityIndicator size="large" color="#1DB954" />
+        <StatusBar style="light" />
       </SafeAreaView>
     );
   }
