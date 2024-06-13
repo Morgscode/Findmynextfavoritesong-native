@@ -60,6 +60,7 @@ export type SpotifyTrack = {
 };
 
 export type TrackFeatures = {
+  [key: string]: number;
   acousticness: number;
   danceability: number;
   energy: number;
