@@ -13,10 +13,12 @@ export default function TrackFeatures() {
   );
 
   async function fetchTrackFeatures() {
-    const features = await getTrackFeatures(state.token!, id as string);
+    if (!id) return;
+    const trackId = typeof id === "string" ? id : id[0];
+    const features = await getTrackFeatures(state.token!, trackId);
     // eslint-disable-next-line
     console.log(features);
-    setTrackFeatures(features as TrackFeatures);
+    setTrackFeatures(features);
   }
 
   useEffect(() => {
@@ -37,9 +39,7 @@ export default function TrackFeatures() {
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
-      <Text className="text-2xl text-gray-400 mb-8">
-        Fetching the track analysis...
-      </Text>
+      <Text className="text-2xl text-gray-400 mb-8">Track Features</Text>
       <ActivityIndicator size="large" color="#1DB954" />
       <StatusBar style="light" />
     </SafeAreaView>
