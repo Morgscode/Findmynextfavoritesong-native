@@ -60,6 +60,7 @@ export type SpotifyTrack = {
 };
 
 export type TrackFeatures = {
+  [key: string]: number;
   acousticness: number;
   danceability: number;
   energy: number;
@@ -93,6 +94,8 @@ export async function getTopTracks(token: string, url: string | null = null) {
         Authorization: `Bearer ${token}`,
       },
     });
+    // eslint-disable-next-line
+    console.log(response.status);
     const body = await response.json();
     return {
       tracks: body?.items as Array<SpotifyTrack>,
@@ -120,10 +123,12 @@ export async function getTrackFeatures(token: string, id: string) {
         },
       },
     );
+    // eslint-disable-next-line
+    console.log(response.status);
     return (await response.json()) as TrackFeatures;
   } catch (error) {
     // eslint-disable-next-line
     console.error(error);
-    return {};
+    return null;
   }
 }

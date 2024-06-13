@@ -40,12 +40,12 @@ function authReducer(state: AuthState, action: AuthAction) {
       return {
         ...state,
         isLoggedIn: false,
+        token: null,
       };
     case "SET_TOKEN":
-      const params = new URLSearchParams(action.payload);
       return {
         ...state,
-        token: params.get("#access_token"),
+        token: new URLSearchParams(action.payload).get("#access_token"),
       };
     default:
       return state;
