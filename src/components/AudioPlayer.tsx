@@ -6,15 +6,11 @@ import {
   Pressable,
   type ImageSourcePropType,
 } from "react-native";
-import { Audio, AVPlaybackStatus } from "expo-av";
-import { type SpotifyTrack } from "@src/lib/spotify";
+import { Audio, type AVPlaybackStatus } from "expo-av";
+import { useTrackContext } from "@src/context/TrackContext";
 
-export default function AudioPlayer({
-  name,
-  album,
-  artists,
-  preview_url,
-}: SpotifyTrack) {
+export default function AudioPlayer() {
+  const { state } = useTrackContext();
   const [audio, setAudio] = useState<Audio.Sound>(new Audio.Sound());
   const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
   const [icon, setIcon] = useState<ImageSourcePropType>(
@@ -23,9 +19,10 @@ export default function AudioPlayer({
   );
 
   async function getAudio() {
+    if (!state.track?.preview_url) return;
     try {
       const { sound, status } = await Audio.Sound.createAsync(
-        { uri: preview_url },
+        { uri: state.track.preview_url },
         { shouldPlay: true },
         (playbackStatus: AVPlaybackStatus) => {
           if (!playbackStatus.isLoaded) {
@@ -100,23 +97,27 @@ export default function AudioPlayer({
   }
 
   useEffect(() => {
-    preview_url && prepareAudio();
+    state.track && state.track.preview_url && prepareAudio();
     return () => {
       unloadAudio();
     };
-  }, [preview_url]);
+  }, [state.track]);
+
+  if (!state.track) return;
 
   return (
-    <View className="flex flex-row items-center ml-4 mr-4 bg-[#062812] p-2">
+    <View className="flex flex-row items-center bg-[#062812] p-2">
       <Image
         style={{ marginRight: 16 }}
-        source={{ uri: album.images[0].url }}
+        source={{ uri: state.track.album.images[0].url }}
         height={50}
         width={50}
       />
       <View className="flex gap-2">
-        <Text className="text-white">{name}</Text>
-        <Text className="text-white text-sm">{artists[0].name}</Text>
+        <Text className="text-white">{state.track.name}</Text>
+        <Text className="text-white text-sm">
+          {state.track.artists[0].name}
+        </Text>
       </View>
       <Pressable onPress={() => toggleAudio()} className="ml-auto">
         <Image source={icon} width={35} />

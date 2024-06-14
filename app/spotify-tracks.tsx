@@ -8,27 +8,27 @@ import {
   Pressable,
   type NativeScrollEvent,
 } from "react-native";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import SpotifyTrack from "@src/components/SpotifyTrack";
-import AudioPlayer from "@src/components/AudioPlayer";
 import { useAuthContext } from "@src/context/AuthContext";
+import { useTrackContext } from "@src/context/TrackContext";
 import {
   getTopTracks,
   type SpotifyTrack as SpotifyTrackType,
 } from "@src/lib/spotify";
 
 export default function SpotifyTracks() {
-  const { state } = useAuthContext();
+  const { state: authState } = useAuthContext();
+  const { state: trackState, dispatch } = useTrackContext();
   const [tracks, setTracks] = useState<Array<SpotifyTrackType>>([]);
-  const [selectedTrack, setSelectedTrack] = useState<SpotifyTrackType | null>(
-    null,
-  );
   const [next, setNext] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function getTracks(url: string | null = null) {
+    if (!authState.token) return;
     setLoading(true);
-    const { tracks, next } = await getTopTracks(state.token!, url);
+    const { tracks, next } = await getTopTracks(authState.token, url);
     setTracks((topTracks) => [...topTracks, ...tracks]);
     setNext(next);
     setLoading(false);
@@ -47,6 +47,16 @@ export default function SpotifyTracks() {
       layoutMeasurement.height + contentOffset.y >= contentSize.height - 100
     );
   };
+
+  function sampleRedirect(track: SpotifyTrackType) {
+    if (trackState.track?.id && trackState.track.id !== track.id) {
+      dispatch({ type: "SET_TRACK", payload: track });
+    }
+    router.replace({
+      pathname: "track-features/[id]",
+      params: { id: track.id },
+    });
+  }
 
   useEffect(() => {
     getTracks();
@@ -83,12 +93,18 @@ export default function SpotifyTracks() {
         indicatorStyle="white"
       >
         {tracks.map((track) => (
-          <Pressable key={track.id} onPress={() => setSelectedTrack(track)}>
-            <SpotifyTrack {...track} />
+          <Pressable
+            key={track.id}
+            onPress={() => dispatch({ type: "SET_TRACK", payload: track })}
+          >
+            <SpotifyTrack {...track}>
+              <Pressable onPress={() => sampleRedirect(track)}>
+                <Text className="text-gray-400">Sample</Text>
+              </Pressable>
+            </SpotifyTrack>
           </Pressable>
         ))}
       </ScrollView>
-      {selectedTrack && <AudioPlayer {...selectedTrack} />}
       <StatusBar style="light" />
     </SafeAreaView>
   );
