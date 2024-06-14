@@ -1,15 +1,14 @@
-import React from "react";
-import { View, Text, Image, Pressable } from "react-native";
-import { Link } from "expo-router";
+import React, { type PropsWithChildren } from "react";
+import { View, Text, Image } from "react-native";
 import { type SpotifyTrack } from "@src/lib/spotify";
 
 export default function SpotifyTrack({
-  id,
   name,
   album,
   artists,
   explicit,
-}: SpotifyTrack) {
+  children,
+}: PropsWithChildren<SpotifyTrack>) {
   return (
     <View className="flex flex-row items-center gap-4 py-1 mb-1">
       <Image source={{ uri: album.images[0].url }} height={50} width={50} />
@@ -24,18 +23,8 @@ export default function SpotifyTrack({
           <Text className="text-gray-400 text-sm">{artists[0].name}</Text>
         </View>
       </View>
-      <View className="p-1	border-solid border-2 border-gray-400">
-        <Link
-          href={{
-            pathname: "/track-features/[id]",
-            params: { id },
-          }}
-          asChild
-        >
-          <Pressable>
-            <Text className="text-gray-400">Sample</Text>
-          </Pressable>
-        </Link>
+      <View className="p-1 border-solid border-2 border-gray-400">
+        {children}
       </View>
     </View>
   );
