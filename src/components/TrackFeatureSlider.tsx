@@ -23,13 +23,14 @@ export default function TrackFeatureSlider({
         1.0 represents high confidence the track is acoustic.
       </Text>
       <Slider
+        value={featureValue}
         step={0.001}
-        style={{ width: "100%", height: 40 }}
         minimumValue={0}
         maximumValue={1}
+        onValueChange={(value) => updateFn(featureName, value)}
         minimumTrackTintColor="#FFFFFF"
         maximumTrackTintColor="#000000"
-        onValueChange={(value) => updateFn(featureName, value)}
+        style={{ width: "100%", height: 40 }}
       />
     </View>
   );

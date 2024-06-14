@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import SpotifyTrack from "@src/components/SpotifyTrack";
-import AudioPlayer from "@src/components/AudioPlayer";
 import { useAuthContext } from "@src/context/AuthContext";
+import { useTrackContext } from "@src/context/TrackContext";
 import {
   getTopTracks,
   type SpotifyTrack as SpotifyTrackType,
@@ -19,10 +19,8 @@ import {
 
 export default function SpotifyTracks() {
   const { state } = useAuthContext();
+  const { dispatch } = useTrackContext();
   const [tracks, setTracks] = useState<Array<SpotifyTrackType>>([]);
-  const [selectedTrack, setSelectedTrack] = useState<SpotifyTrackType | null>(
-    null,
-  );
   const [next, setNext] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -83,12 +81,14 @@ export default function SpotifyTracks() {
         indicatorStyle="white"
       >
         {tracks.map((track) => (
-          <Pressable key={track.id} onPress={() => setSelectedTrack(track)}>
+          <Pressable
+            key={track.id}
+            onPress={() => dispatch({ type: "SET_TRACK", payload: track })}
+          >
             <SpotifyTrack {...track} />
           </Pressable>
         ))}
       </ScrollView>
-      {selectedTrack && <AudioPlayer {...selectedTrack} />}
       <StatusBar style="light" />
     </SafeAreaView>
   );
