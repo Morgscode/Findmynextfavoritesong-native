@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import Slider from "@react-native-community/slider";
+import { TRACK_FEATURES_INFO } from "@src/lib/spotify";
 
 type TrackFeatureSliderProps = {
   featureName: string;
@@ -13,20 +14,18 @@ export default function TrackFeatureSlider({
   featureValue,
   updateFn,
 }: TrackFeatureSliderProps) {
+  const info = TRACK_FEATURES_INFO[featureName];
   return (
     <View>
       <Text className="text-lg text-gray-400 mb-4">
-        {featureName} - {featureValue.toFixed(3)}
+        {info.name} - {featureValue.toFixed(3)}
       </Text>
-      <Text className="text-gray-400 mb-4">
-        A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
-        1.0 represents high confidence the track is acoustic.
-      </Text>
+      <Text className="text-gray-400 mb-4">{info.description}</Text>
       <Slider
         value={featureValue}
-        step={0.001}
-        minimumValue={0}
-        maximumValue={1}
+        step={info.step}
+        minimumValue={info.min}
+        maximumValue={info.max}
         onValueChange={(value) => updateFn(featureName, value)}
         minimumTrackTintColor="#FFFFFF"
         maximumTrackTintColor="#000000"
