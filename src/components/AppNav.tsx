@@ -5,14 +5,24 @@ import { useAuthContext } from "@src/context/AuthContext";
 import { useTrackContext } from "@src/context/TrackContext";
 import { getSpotifyAuthUrl } from "@src/lib/spotify";
 
-type Route = "/" | "/spotify-tracks" | "/track-features";
+type Route =
+  | "/"
+  | "/spotify-tracks"
+  | "/track-features"
+  | "/track-features/[id]"
+  | "/genres"
+  | "/recommendations";
+
+type TrackIdParam = Record<"id", string>;
+
+type RouteParam = TrackIdParam;
 
 type DynamicRoute = {
-  pathname: string;
-  params: Record<string, string | number>;
+  pathname: Route;
+  params: RouteParam;
 };
 
-type NavRoute = Route | DynamicRoute | string;
+type NavRoute = Route | DynamicRoute;
 
 type NavAction = {
   next: NavRoute;
@@ -32,7 +42,9 @@ export default function AppNav() {
 
   const NAV_ACTIONS: NavActions = {
     "/": {
-      next: authState.isLoggedIn ? "/spotify-tracks" : getSpotifyAuthUrl(),
+      next: authState.isLoggedIn
+        ? "/spotify-tracks"
+        : (getSpotifyAuthUrl() as Route),
       prev: "/",
     },
     "/spotify-tracks": {
