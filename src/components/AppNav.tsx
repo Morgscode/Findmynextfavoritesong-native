@@ -77,8 +77,13 @@ export default function AppNav() {
     NAV_ACTIONS[route][direction];
 
   useEffect(() => {
-    setNextAction(getAction(path, "next"));
-    setBackAction(getAction(path, "prev"));
+    try {
+      setNextAction(getAction(path, "next"));
+      setBackAction(getAction(path, "prev"));
+    } catch (error) {
+      setNextAction("/");
+      setBackAction("/");
+    }
   }, [trackState.track, path, authState.isLoggedIn]);
 
   return (

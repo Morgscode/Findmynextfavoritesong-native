@@ -10,12 +10,13 @@ import {
 import { Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useAuthContext } from "@src/context/AuthContext";
+import { useSampleContext } from "@src/context/SampleConext";
 import { getSeedGenres } from "@src/lib/spotify";
 
 export default function Genres() {
   const [genres, setGenres] = useState<Array<string>>([]);
-  const [selectedGenres, setSelectedGenres] = useState<Array<string>>([]);
   const { state: authState } = useAuthContext();
+  const { state: sampleState, dispatch: sampleDispatch } = useSampleContext();
 
   async function fetchGenres() {
     if (!authState.token) return;
@@ -28,24 +29,31 @@ export default function Genres() {
   }, []);
 
   const genreStyles = (genre: string) =>
-    selectedGenres.includes(genre)
+    sampleState.genres.includes(genre)
       ? "p-2 rounded-full border-2 border-[#1DB954] bg-[#1DB954]"
       : "p-2 rounded-full border-2 border-solid border-gray-400";
 
   const textStyles = (genre: string) =>
-    selectedGenres.includes(genre)
+    sampleState.genres.includes(genre)
       ? "px-2 text-[#191414]"
       : "px-2 text-gray-400";
 
   const genreDisabled = (genre: string) =>
-    selectedGenres.length === 3 && selectedGenres.includes(genre) === false;
+    sampleState.genres.length === 5 &&
+    sampleState.genres.includes(genre) === false;
 
-  const genresSelected = () => selectedGenres.length > 0;
+  const genresSelected = () => sampleState.genres?.length > 0;
 
   function toggleGenre(genre: string) {
-    selectedGenres.includes(genre)
-      ? setSelectedGenres((genres) => genres.filter((g) => g !== genre))
-      : setSelectedGenres((genres) => [...genres, genre]);
+    sampleState.genres.includes(genre)
+      ? sampleDispatch({
+          type: "SET_GENRES",
+          payload: sampleState.genres.filter((g) => g !== genre),
+        })
+      : sampleDispatch({
+          type: "SET_GENRES",
+          payload: [...sampleState.genres, genre],
+        });
   }
 
   if (!genres.length) {
@@ -67,18 +75,18 @@ export default function Genres() {
           Available Seed Genres
         </Text>
         <Text className="text-gray-400">
-          Select up to 3 to tell Spotify what genres you want to sample music
+          Select up to 5 to tell Spotify what genres you want to sample music
           from.
         </Text>
         {genresSelected() && (
-          <View className="flex flex-row gap-4 mt-1">
-            {selectedGenres.map((genre, index) => (
+          <View className="flex flex-row flex-wrap gap-2 mt-1">
+            {sampleState.genres.map((genre, index) => (
               <Pressable
                 key={`selected-${genre}-${index}`}
                 className="p-2 rounded-full bg-[#1DB954]"
                 onPress={() => toggleGenre(genre)}
               >
-                <Text className="px-2 text-[#191919]">{genre}</Text>
+                <Text className="px-2 text-[#191414]">{genre}</Text>
               </Pressable>
             ))}
           </View>
@@ -89,7 +97,7 @@ export default function Genres() {
         className="px-4 pb-[50px]"
         indicatorStyle="white"
       >
-        <View className="flex flex-row flex-wrap gap-4">
+        <View className="flex flex-row flex-wrap gap-2">
           {genres.map((genre, index) => (
             <Pressable
               className={genreStyles(genre)}
