@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   Text,
@@ -10,28 +10,30 @@ import { useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import TrackFeatureSlider from "@src/components/TrackFeatureSlider";
 import { useAuthContext } from "@src/context/AuthContext";
+import { useSampleContext } from "@src/context/SampleConext";
 import { getTrackFeatures, type TrackFeatures } from "@src/lib/spotify";
 
 export default function TrackFeatures() {
   const { state } = useAuthContext();
   const { id } = useLocalSearchParams();
-  const [trackFeatures, setTrackFeatures] = useState<TrackFeatures | null>(
-    null,
-  );
+  const { state: sampleState, dispatch: sampleDispatch } = useSampleContext();
 
   async function fetchTrackFeatures() {
     if (!id) return;
     const trackId = typeof id === "string" ? id : id[0];
     const features = await getTrackFeatures(state.token!, trackId);
-    setTrackFeatures(features);
+    sampleDispatch({
+      type: "SET_FEATURES",
+      payload: features as TrackFeatures,
+    });
   }
 
   function updateFeatures(feature: string, value: number) {
     const updated = {
-      ...(trackFeatures as TrackFeatures),
+      ...(sampleState.features as TrackFeatures),
     };
     updated[feature] = value;
-    setTrackFeatures(updated);
+    sampleDispatch({ type: "SET_FEATURES", payload: updated });
   }
 
   useEffect(() => {
@@ -52,7 +54,7 @@ export default function TrackFeatures() {
       ));
   }
 
-  if (!trackFeatures) {
+  if (!sampleState.features) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
         <Text className="text-2xl text-gray-400 mb-8">
@@ -80,7 +82,7 @@ export default function TrackFeatures() {
         className="px-4 pb-[50px]"
         indicatorStyle="white"
       >
-        {sliders(trackFeatures)}
+        {sliders(sampleState.features)}
       </ScrollView>
       <StatusBar style="light" />
     </SafeAreaView>

@@ -23,9 +23,7 @@ export default function SpotifyTrack({
           <Text className="text-gray-400 text-sm">{artists[0].name}</Text>
         </View>
       </View>
-      <View className="p-1 border-solid border-2 border-gray-400">
-        {children}
-      </View>
+      {children}
     </View>
   );
 }

@@ -106,7 +106,7 @@ export default function AudioPlayer() {
   if (!state.track) return;
 
   return (
-    <View className="flex flex-row items-center bg-[#062812] p-2">
+    <View className="flex flex-row items-center bg-[#041A0C] p-2">
       <Image
         style={{ marginRight: 16 }}
         source={{ uri: state.track.album.images[0].url }}

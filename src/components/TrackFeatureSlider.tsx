@@ -27,8 +27,8 @@ export default function TrackFeatureSlider({
         minimumValue={info.min}
         maximumValue={info.max}
         onValueChange={(value) => updateFn(featureName, value)}
-        minimumTrackTintColor="#FFFFFF"
-        maximumTrackTintColor="#000000"
+        minimumTrackTintColor="#1DB954"
+        maximumTrackTintColor="#222222"
         style={{ width: "100%", height: 40 }}
       />
     </View>

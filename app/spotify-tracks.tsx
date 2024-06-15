@@ -13,6 +13,7 @@ import { StatusBar } from "expo-status-bar";
 import SpotifyTrack from "@src/components/SpotifyTrack";
 import { useAuthContext } from "@src/context/AuthContext";
 import { useTrackContext } from "@src/context/TrackContext";
+import { useSampleContext } from "@src/context/SampleConext";
 import {
   getTopTracks,
   type SpotifyTrack as SpotifyTrackType,
@@ -20,7 +21,8 @@ import {
 
 export default function SpotifyTracks() {
   const { state: authState } = useAuthContext();
-  const { state: trackState, dispatch } = useTrackContext();
+  const { state: trackState, dispatch: trackDispatch } = useTrackContext();
+  const { state: sampleState, dispatch: sampleDispatch } = useSampleContext();
   const [tracks, setTracks] = useState<Array<SpotifyTrackType>>([]);
   const [next, setNext] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,12 +50,24 @@ export default function SpotifyTracks() {
     );
   };
 
+  const isSelectedTrack = (track: SpotifyTrackType) =>
+    trackState.track && trackState.track.id === track.id;
+
+  const actionStyles = (track: SpotifyTrackType) =>
+    isSelectedTrack(track)
+      ? "p-2 border-2 border-solid border-[#1DB954]"
+      : "p-2 border-2 border-solid border-gray-400";
+
   function sampleRedirect(track: SpotifyTrackType) {
     if (
       !trackState.track ||
       (trackState.track && trackState.track.id !== track.id)
     ) {
-      dispatch({ type: "SET_TRACK", payload: track });
+      trackDispatch({ type: "SET_TRACK", payload: track });
+      sampleDispatch({
+        type: "SET_TRACKS",
+        payload: [...sampleState.tracks, track],
+      });
     }
     router.replace({
       pathname: "track-features/[id]",
@@ -98,10 +112,13 @@ export default function SpotifyTracks() {
         {tracks.map((track) => (
           <Pressable
             key={track.id}
-            onPress={() => dispatch({ type: "SET_TRACK", payload: track })}
+            onPress={() => trackDispatch({ type: "SET_TRACK", payload: track })}
           >
             <SpotifyTrack {...track}>
-              <Pressable onPress={() => sampleRedirect(track)}>
+              <Pressable
+                className={actionStyles(track)}
+                onPress={() => sampleRedirect(track)}
+              >
                 <Text className="text-gray-400">Sample</Text>
               </Pressable>
             </SpotifyTrack>
