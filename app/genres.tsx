@@ -29,16 +29,18 @@ export default function Genres() {
 
   const genreStyles = (genre: string) =>
     selectedGenres.includes(genre)
-      ? "border-2 border-solid border-[#1DB954] p-2 bg-[#1DB954]"
-      : "border-2 border-solid border-gray-400 p-2";
+      ? "p-2 rounded-full border-2 border-[#1DB954] bg-[#1DB954]"
+      : "p-2 rounded-full border-2 border-solid border-gray-400";
 
   const textStyles = (genre: string) =>
-    selectedGenres.includes(genre) ? "text-[#191414]" : "text-gray-400";
+    selectedGenres.includes(genre)
+      ? "px-2 text-[#191414]"
+      : "px-2 text-gray-400";
 
   const genreDisabled = (genre: string) =>
     selectedGenres.length === 3 && selectedGenres.includes(genre) === false;
 
-  const displayButton = () => selectedGenres.length > 0;
+  const genresSelected = () => selectedGenres.length > 0;
 
   function toggleGenre(genre: string) {
     selectedGenres.includes(genre)
@@ -68,6 +70,19 @@ export default function Genres() {
           Select up to 3 to tell Spotify what genres you want to sample music
           from.
         </Text>
+        {genresSelected() && (
+          <View className="flex flex-row gap-4 mt-1">
+            {selectedGenres.map((genre, index) => (
+              <Pressable
+                key={`selected-${genre}-${index}`}
+                className="p-2 rounded-full bg-[#1DB954]"
+                onPress={() => toggleGenre(genre)}
+              >
+                <Text className="px-2 text-[#191919]">{genre}</Text>
+              </Pressable>
+            ))}
+          </View>
+        )}
       </View>
       <ScrollView
         scrollEventThrottle={500}
@@ -87,7 +102,7 @@ export default function Genres() {
           ))}
         </View>
       </ScrollView>
-      {displayButton() && (
+      {genresSelected() && (
         <Link href="/recommendations" asChild>
           <Pressable className="rounded-full bg-[#1DB954] p-4 m-4">
             <Text className="text-[#191414] text-center">
