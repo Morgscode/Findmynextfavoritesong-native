@@ -24,16 +24,16 @@ export default function App() {
     if (!state.isLoggedIn) {
       return (
         <Link href={getSpotifyAuthUrl()} asChild>
-          <Pressable className="border-solid border-2 border-gray-400 p-4 rounded-lg">
-            <Text className="text-gray-400">Authorise with Spotify</Text>
+          <Pressable className="rounded-full bg-[#1DB954] p-4">
+            <Text className="text-[#191414]">Authorise with Spotify</Text>
           </Pressable>
         </Link>
       );
     }
     return (
       <Link href="/spotify-tracks" asChild>
-        <Pressable className="border-solid border-2 border-gray-400 p-4 rounded-lg">
-          <Text className="text-gray-400">Sample Music</Text>
+        <Pressable className="rounded-full bg-[#1DB954] p-4">
+          <Text className="text-[#191414]">Sample Music</Text>
         </Pressable>
       </Link>
     );

@@ -87,7 +87,7 @@ export default function AppNav() {
   }, [trackState.track, path, authState.isLoggedIn]);
 
   return (
-    <View className="bg-[#191414]/95 flex flex-row items-center justify-between p-6">
+    <View className="bg-[#191414] flex flex-row items-center justify-between pb-6 px-6 pt-3">
       <Link href="/" asChild>
         <Pressable className="border-solid border-2 border-gray-400 p-2 rounded-lg">
           <Text className="text-gray-400">Home</Text>
