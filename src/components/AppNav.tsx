@@ -84,18 +84,18 @@ export default function AppNav() {
   return (
     <View className="bg-[#191414]/95 flex flex-row items-center justify-between p-6">
       <Link href="/" asChild>
-        <Pressable className="border-solid border-2 border-gray-400 p-1 rounded-lg">
+        <Pressable className="border-solid border-2 border-gray-400 p-2 rounded-lg">
           <Text className="text-gray-400">Home</Text>
         </Pressable>
       </Link>
       <Link href={prevAction} asChild>
-        <Pressable className="border-solid border-2 border-gray-400 p-1 rounded-lg">
-          <Text className="text-gray-400">Back Action</Text>
+        <Pressable className="border-solid border-2 border-gray-400 p-2 rounded-lg">
+          <Text className="text-gray-400">Back</Text>
         </Pressable>
       </Link>
       <Link href={nextAction} asChild>
-        <Pressable className="border-solid border-2 border-gray-400 p-1 rounded-lg">
-          <Text className="text-gray-400">Next Action</Text>
+        <Pressable className="border-solid border-2 border-gray-400 p-2 rounded-lg">
+          <Text className="text-gray-400">Next</Text>
         </Pressable>
       </Link>
     </View>
