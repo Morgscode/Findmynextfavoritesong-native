@@ -16,7 +16,7 @@ type NavRoute = Route | DynamicRoute | string;
 
 type NavAction = {
   next: NavRoute;
-  back: NavRoute;
+  prev: NavRoute;
 };
 
 type NavActions = {
@@ -25,7 +25,7 @@ type NavActions = {
 
 export default function AppNav() {
   const [nextAction, setNextAction] = useState<NavRoute>("/");
-  const [backAction, setBackAction] = useState<NavRoute>("/");
+  const [prevAction, setBackAction] = useState<NavRoute>("/");
   const { state: authState } = useAuthContext();
   const { state: trackState } = useTrackContext();
   const path = usePathname();
@@ -33,7 +33,7 @@ export default function AppNav() {
   const NAV_ACTIONS: NavActions = {
     "/": {
       next: authState.isLoggedIn ? "/spotify-tracks" : getSpotifyAuthUrl(),
-      back: "/",
+      prev: "/",
     },
     "/spotify-tracks": {
       next: trackState.track
@@ -42,38 +42,47 @@ export default function AppNav() {
             params: { id: trackState.track.id },
           }
         : "/",
-      back: "/",
+      prev: "/",
     },
     [`/track-features/${trackState.track?.id}`]: {
-      next: "/",
-      back: "/spotify-tracks",
+      next: "/genres",
+      prev: "/spotify-tracks",
+    },
+    "/genres": {
+      next: "/recommendations",
+      prev: trackState.track
+        ? {
+            pathname: "/track-features/[id]",
+            params: { id: trackState.track.id },
+          }
+        : "/spotify-tracks",
     },
   };
 
-  type Direction = "back" | "next";
+  type Direction = "prev" | "next";
 
   const getAction = (route: string, direction: Direction) =>
     NAV_ACTIONS[route][direction];
 
   useEffect(() => {
     setNextAction(getAction(path, "next"));
-    setBackAction(getAction(path, "back"));
+    setBackAction(getAction(path, "prev"));
   }, [trackState.track, path, authState.isLoggedIn]);
 
   return (
-    <View className="bg-[#191414]/95 flex flex-row items-center justify-between p-8">
+    <View className="bg-[#191414]/95 flex flex-row items-center justify-between p-6">
       <Link href="/" asChild>
-        <Pressable>
+        <Pressable className="border-solid border-2 border-gray-400 p-1 rounded-lg">
           <Text className="text-gray-400">Home</Text>
         </Pressable>
       </Link>
-      <Link href={backAction} asChild>
-        <Pressable>
+      <Link href={prevAction} asChild>
+        <Pressable className="border-solid border-2 border-gray-400 p-1 rounded-lg">
           <Text className="text-gray-400">Back Action</Text>
         </Pressable>
       </Link>
       <Link href={nextAction} asChild>
-        <Pressable>
+        <Pressable className="border-solid border-2 border-gray-400 p-1 rounded-lg">
           <Text className="text-gray-400">Next Action</Text>
         </Pressable>
       </Link>
