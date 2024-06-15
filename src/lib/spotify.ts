@@ -122,7 +122,7 @@ export const TRACK_FEATURES_INFO: TrackFeaturesInfo = {
     name: "Durations (ms)",
     description: "The duration of the track in milliseconds.",
     min: 0,
-    max: 600,
+    max: 1000000,
     step: 100,
   },
   energy: {

@@ -75,7 +75,7 @@ export default function SpotifyTracks() {
   }
 
   return (
-    <SafeAreaView className="relative flex-1 bg-[#191414] h-screen w-screen">
+    <SafeAreaView className="relative flex-1 bg-[#191414]">
       <View className="p-4">
         <Text className="text-gray-400 text-2xl mb-4">
           These are your current top tracks.
