@@ -49,7 +49,10 @@ export default function SpotifyTracks() {
   };
 
   function sampleRedirect(track: SpotifyTrackType) {
-    if (trackState.track?.id && trackState.track.id !== track.id) {
+    if (
+      !trackState.track ||
+      (trackState.track && trackState.track.id !== track.id)
+    ) {
       dispatch({ type: "SET_TRACK", payload: track });
     }
     router.replace({

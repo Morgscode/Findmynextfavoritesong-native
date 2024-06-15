@@ -38,6 +38,8 @@ export default function Genres() {
   const genreDisabled = (genre: string) =>
     selectedGenres.length === 3 && selectedGenres.includes(genre) === false;
 
+  const displayButton = () => selectedGenres.length > 0;
+
   function toggleGenre(genre: string) {
     selectedGenres.includes(genre)
       ? setSelectedGenres((genres) => genres.filter((g) => g !== genre))
@@ -57,7 +59,7 @@ export default function Genres() {
   }
 
   return (
-    <SafeAreaView className="relative flex-1 bg-[#191414]">
+    <SafeAreaView className="flex-1 bg-[#191414]">
       <View className="p-4">
         <Text className="text-gray-400 text-2xl mb-4">
           Available Seed Genres
@@ -85,7 +87,7 @@ export default function Genres() {
           ))}
         </View>
       </ScrollView>
-      {selectedGenres.length && (
+      {displayButton() && (
         <Link href="/recommendations" asChild>
           <Pressable className="rounded-full bg-[#1DB954] p-4 m-4">
             <Text className="text-[#191414] text-center">
@@ -94,6 +96,7 @@ export default function Genres() {
           </Pressable>
         </Link>
       )}
+
       <StatusBar style="light" />
     </SafeAreaView>
   );
