@@ -29,7 +29,7 @@ export default function Genres() {
 
   const genreStyles = (genre: string) =>
     selectedGenres.includes(genre)
-      ? "border-2 border-solid border-[#1DB954] p-2 bg-[#1DB954] disabled:opacity-50"
+      ? "border-2 border-solid border-[#1DB954] p-2 bg-[#1DB954]"
       : "border-2 border-solid border-gray-400 p-2";
 
   const textStyles = (genre: string) =>
@@ -96,7 +96,6 @@ export default function Genres() {
           </Pressable>
         </Link>
       )}
-
       <StatusBar style="light" />
     </SafeAreaView>
   );

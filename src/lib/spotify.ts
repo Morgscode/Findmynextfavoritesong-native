@@ -94,6 +94,85 @@ type TrackFeaturesInfo = {
   [key: string]: TrackFeatureInfo;
 };
 
+export function getSpotifyAuthUrl() {
+  const appReturnUrl = Linking.createURL("/");
+
+  return AUTH_URL.replace(
+    "<<<CLIENT_ID>>>",
+    process.env.EXPO_PUBLIC_CLIENT_ID ?? "client id not set",
+  )
+    .replace("<<<REDIRECT_URI>>>", appReturnUrl)
+    .replace("<<<SCOPES>>>", AUTH_SCOPES);
+}
+
+export async function getTopTracks(token: string, url: string | null = null) {
+  try {
+    const response = await fetch(url ?? `${BASE_URL}${TRACKS_ENDPOINT}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // eslint-disable-next-line
+    console.log(response.status);
+    const body = await response.json();
+    return {
+      tracks: body?.items as Array<SpotifyTrack>,
+      next: (body?.next as string) || null,
+    };
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error(error);
+    return {
+      tracks: [],
+      next: null,
+    };
+  }
+}
+
+export async function getTrackFeatures(token: string, id: string) {
+  try {
+    const response = await fetch(
+      `${BASE_URL}${TRACK_FEATURES_ENDPOINT}/${id}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    // eslint-disable-next-line
+    console.log(response.status);
+    return (await response.json()) as TrackFeatures;
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getSeedGenres(token: string) {
+  try {
+    const response = await fetch(`${BASE_URL}${SEED_GENRES_ENDPOINT}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // eslint-disable-next-line
+    console.log(response.status);
+    const body = await response.json();
+    return body?.genres as Array<string>;
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error(error);
+    return [];
+  }
+}
+
 export const TRACK_FEATURES_INFO: TrackFeaturesInfo = {
   acousticness: {
     name: "Acousticness",
@@ -236,82 +315,3 @@ export const TRACK_FEATURES_INFO: TrackFeaturesInfo = {
     step: 0.01,
   },
 };
-
-export function getSpotifyAuthUrl() {
-  const appReturnUrl = Linking.createURL("/");
-
-  return AUTH_URL.replace(
-    "<<<CLIENT_ID>>>",
-    process.env.EXPO_PUBLIC_CLIENT_ID ?? "client id not set",
-  )
-    .replace("<<<REDIRECT_URI>>>", appReturnUrl)
-    .replace("<<<SCOPES>>>", AUTH_SCOPES);
-}
-
-export async function getTopTracks(token: string, url: string | null = null) {
-  try {
-    const response = await fetch(url ?? `${BASE_URL}${TRACKS_ENDPOINT}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    // eslint-disable-next-line
-    console.log(response.status);
-    const body = await response.json();
-    return {
-      tracks: body?.items as Array<SpotifyTrack>,
-      next: (body?.next as string) || null,
-    };
-  } catch (error) {
-    // eslint-disable-next-line
-    console.error(error);
-    return {
-      tracks: [],
-      next: null,
-    };
-  }
-}
-
-export async function getTrackFeatures(token: string, id: string) {
-  try {
-    const response = await fetch(
-      `${BASE_URL}${TRACK_FEATURES_ENDPOINT}/${id}`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    // eslint-disable-next-line
-    console.log(response.status);
-    return (await response.json()) as TrackFeatures;
-  } catch (error) {
-    // eslint-disable-next-line
-    console.error(error);
-    return null;
-  }
-}
-
-export async function getSeedGenres(token: string) {
-  try {
-    const response = await fetch(`${BASE_URL}${SEED_GENRES_ENDPOINT}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    // eslint-disable-next-line
-    console.log(response.status);
-    const body = await response.json();
-    return body?.genres as Array<string>;
-  } catch (error) {
-    // eslint-disable-next-line
-    console.error(error);
-    return [];
-  }
-}
