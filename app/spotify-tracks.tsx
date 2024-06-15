@@ -41,7 +41,7 @@ export default function SpotifyTracks() {
   }
 
   function toggleTrack(track: SpotifyTrackType) {
-    sampleState.tracks.includes(track)
+    sampleState.tracks.find((t) => t.id === track.id)
       ? sampleDispatch({
           type: "SET_TRACKS",
           payload: sampleState.tracks.filter((t) => t.id !== track.id),
@@ -65,16 +65,15 @@ export default function SpotifyTracks() {
   const tracksSelected = () => sampleState.tracks.length > 0;
 
   const isSelectedTrack = (track: SpotifyTrackType) =>
-    sampleState.tracks.includes(track);
+    sampleState.tracks.find((t) => t.id === track.id);
 
   const isSelectedStyles = (track: SpotifyTrackType) =>
     isSelectedTrack(track)
       ? "p-2 border-2 border-solid border-[#1DB954] rounded-lg"
       : "p-2 border-2 border-solid border-gray-400 rounded-lg";
 
-  const isDisabled = (track) =>
-    sampleState.tracks.length === 5 &&
-    sampleState.tracks.includes(track) === false;
+  const isDisabled = (track: SpotifyTrackType) =>
+    sampleState.tracks.length === 5 && !isSelectedTrack(track);
 
   function sampleRedirect(track: SpotifyTrackType) {
     if (
@@ -83,7 +82,7 @@ export default function SpotifyTracks() {
     ) {
       trackDispatch({ type: "SET_TRACK", payload: track });
     }
-    if (!sampleState.tracks.includes(track)) {
+    if (!isSelectedTrack(track)) {
       sampleDispatch({
         type: "SET_TRACKS",
         payload: [...sampleState.tracks, track],
