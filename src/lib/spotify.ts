@@ -7,6 +7,7 @@ const AUTH_SCOPES =
 const BASE_URL = "https://api.spotify.com/v1";
 const TRACKS_ENDPOINT = "/me/top/tracks";
 const TRACK_FEATURES_ENDPOINT = "/audio-features";
+const SEED_GENRES_ENDPOINT = "/recommendations/available-genre-seeds";
 
 type SpotifyImage = {
   height: number;
@@ -115,7 +116,7 @@ export const TRACK_FEATURES_INFO: TrackFeaturesInfo = {
     description:
       "Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.",
     min: 0,
-    max: 0,
+    max: 1,
     step: 0.01,
   },
   duration_ms: {
@@ -292,5 +293,25 @@ export async function getTrackFeatures(token: string, id: string) {
     // eslint-disable-next-line
     console.error(error);
     return null;
+  }
+}
+
+export async function getSeedGenres(token: string) {
+  try {
+    const response = await fetch(`${BASE_URL}${SEED_GENRES_ENDPOINT}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // eslint-disable-next-line
+    console.log(response.status);
+    const body = await response.json();
+    return body?.genres as Array<string>;
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error(error);
+    return [];
   }
 }
