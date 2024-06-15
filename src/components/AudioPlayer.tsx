@@ -106,22 +106,24 @@ export default function AudioPlayer() {
   if (!state.track) return;
 
   return (
-    <View className="flex flex-row items-center bg-[#041A0C] p-2">
-      <Image
-        style={{ marginRight: 16 }}
-        source={{ uri: state.track.album.images[0].url }}
-        height={50}
-        width={50}
-      />
-      <View className="flex gap-2">
-        <Text className="text-white">{state.track.name}</Text>
-        <Text className="text-white text-sm">
-          {state.track.artists[0].name}
-        </Text>
+    <View className="bg-[#191414]">
+      <View className="flex flex-row items-center bg-[#041A0C] p-2 rounded-lg mx-2">
+        <Image
+          style={{ marginRight: 16 }}
+          source={{ uri: state.track.album.images[0].url }}
+          height={50}
+          width={50}
+        />
+        <View className="flex gap-2">
+          <Text className="text-white">{state.track.name}</Text>
+          <Text className="text-white text-sm">
+            {state.track.artists[0].name}
+          </Text>
+        </View>
+        <Pressable onPress={() => toggleAudio()} className="ml-auto">
+          <Image source={icon} width={35} />
+        </Pressable>
       </View>
-      <Pressable onPress={() => toggleAudio()} className="ml-auto">
-        <Image source={icon} width={35} />
-      </Pressable>
     </View>
   );
 }

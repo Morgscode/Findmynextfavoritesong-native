@@ -8,7 +8,7 @@ import {
   Pressable,
   type NativeScrollEvent,
 } from "react-native";
-import { router } from "expo-router";
+import { router, Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import SpotifyTrack from "@src/components/SpotifyTrack";
 import { useAuthContext } from "@src/context/AuthContext";
@@ -40,6 +40,18 @@ export default function SpotifyTracks() {
     await getTracks(next);
   }
 
+  function toggleTrack(track: SpotifyTrackType) {
+    sampleState.tracks.includes(track)
+      ? sampleDispatch({
+          type: "SET_TRACKS",
+          payload: sampleState.tracks.filter((t) => t.id !== track.id),
+        })
+      : sampleDispatch({
+          type: "SET_TRACKS",
+          payload: [...sampleState.tracks, track],
+        });
+  }
+
   const isCloseToBottom = ({
     layoutMeasurement,
     contentOffset,
@@ -50,13 +62,19 @@ export default function SpotifyTracks() {
     );
   };
 
-  const isSelectedTrack = (track: SpotifyTrackType) =>
-    trackState.track && trackState.track.id === track.id;
+  const tracksSelected = () => sampleState.tracks.length > 0;
 
-  const actionStyles = (track: SpotifyTrackType) =>
+  const isSelectedTrack = (track: SpotifyTrackType) =>
+    sampleState.tracks.includes(track);
+
+  const isSelectedStyles = (track: SpotifyTrackType) =>
     isSelectedTrack(track)
-      ? "p-2 border-2 border-solid border-[#1DB954]"
-      : "p-2 border-2 border-solid border-gray-400";
+      ? "p-2 border-2 border-solid border-[#1DB954] rounded-lg"
+      : "p-2 border-2 border-solid border-gray-400 rounded-lg";
+
+  const isDisabled = (track) =>
+    sampleState.tracks.length === 5 &&
+    sampleState.tracks.includes(track) === false;
 
   function sampleRedirect(track: SpotifyTrackType) {
     if (
@@ -64,6 +82,8 @@ export default function SpotifyTracks() {
       (trackState.track && trackState.track.id !== track.id)
     ) {
       trackDispatch({ type: "SET_TRACK", payload: track });
+    }
+    if (!sampleState.tracks.includes(track)) {
       sampleDispatch({
         type: "SET_TRACKS",
         payload: [...sampleState.tracks, track],
@@ -98,7 +118,7 @@ export default function SpotifyTracks() {
           These are your current top tracks.
         </Text>
         <Text className="text-gray-400">
-          Choose one of them to sample similar music.
+          Choose up to 5 of them to sample similar music.
         </Text>
       </View>
       <ScrollView
@@ -116,7 +136,14 @@ export default function SpotifyTracks() {
           >
             <SpotifyTrack {...track}>
               <Pressable
-                className={actionStyles(track)}
+                disabled={isDisabled(track)}
+                className={isSelectedStyles(track)}
+                onPress={() => toggleTrack(track)}
+              >
+                <Text className="text-gray-400">Select</Text>
+              </Pressable>
+              <Pressable
+                className="p-2 border-2 border-solid border-gray-400 rounded-lg"
                 onPress={() => sampleRedirect(track)}
               >
                 <Text className="text-gray-400">Sample</Text>
@@ -125,6 +152,25 @@ export default function SpotifyTracks() {
           </Pressable>
         ))}
       </ScrollView>
+      {tracksSelected() && (
+        <Link
+          href={{
+            pathname: "track-features/[id]",
+            params: {
+              id:
+                (trackState.track && trackState.track.id) ||
+                sampleState.tracks[0].id,
+            },
+          }}
+          asChild
+        >
+          <Pressable className="rounded-full bg-[#1DB954] p-4 m-4">
+            <Text className="text-[#191414] text-center">
+              Set Sample Preferences
+            </Text>
+          </Pressable>
+        </Link>
+      )}
       <StatusBar style="light" />
     </SafeAreaView>
   );
