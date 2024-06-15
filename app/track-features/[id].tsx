@@ -71,8 +71,8 @@ export default function TrackFeatures() {
         <Text className="text-gray-400">
           This is the Spotify tack analysis of your chosen song. Spotify uses
           these attributes to classify music and suggest new songs to you. You
-          can either search for new music based on these attributes as they
-          are... or modify them with the sliders below.
+          can either search for new music based on these attributes as they are,
+          or modify them with the sliders below.
         </Text>
       </View>
       <ScrollView
