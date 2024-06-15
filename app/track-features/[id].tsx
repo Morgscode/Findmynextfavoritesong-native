@@ -23,8 +23,6 @@ export default function TrackFeatures() {
     if (!id) return;
     const trackId = typeof id === "string" ? id : id[0];
     const features = await getTrackFeatures(state.token!, trackId);
-    // eslint-disable-next-line
-    console.log(features);
     setTrackFeatures(features);
   }
 
@@ -48,7 +46,7 @@ export default function TrackFeatures() {
         <TrackFeatureSlider
           key={`${index}-${key}`}
           featureName={key}
-          featureValue={value}
+          featureValue={value as number}
           updateFn={updateFeatures}
         />
       ));
