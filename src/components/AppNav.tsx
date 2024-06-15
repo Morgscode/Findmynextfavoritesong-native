@@ -13,9 +13,9 @@ type Route =
   | "/genres"
   | "/recommendations";
 
-type TrackIdParam = Record<"id", string>;
+type IdParam = Record<"id", string>;
 
-type RouteParam = TrackIdParam;
+type RouteParam = IdParam;
 
 type DynamicRoute = {
   pathname: Route;
@@ -32,6 +32,8 @@ type NavAction = {
 type NavActions = {
   [key: string]: NavAction;
 };
+
+type Direction = "prev" | "next";
 
 export default function AppNav() {
   const [nextAction, setNextAction] = useState<NavRoute>("/");
@@ -70,8 +72,6 @@ export default function AppNav() {
         : "/spotify-tracks",
     },
   };
-
-  type Direction = "prev" | "next";
 
   const getAction = (route: string, direction: Direction) =>
     NAV_ACTIONS[route][direction];
