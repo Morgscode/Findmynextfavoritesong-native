@@ -73,8 +73,7 @@ export default function SpotifyTracks() {
       : "p-2 border-2 border-solid border-gray-400 rounded-lg";
 
   const isDisabled = (track: SpotifyTrackType) =>
-    sampleState.tracks.length === 5 &&
-    !sampleState.tracks.find((t) => t.id === track.id);
+    sampleState.tracks.length === 5 && !isSelectedTrack(track);
 
   function sampleRedirect(track: SpotifyTrackType) {
     if (
@@ -83,7 +82,7 @@ export default function SpotifyTracks() {
     ) {
       trackDispatch({ type: "SET_TRACK", payload: track });
     }
-    if (!sampleState.tracks.find((t) => t.id === track.id)) {
+    if (!isSelectedTrack(track)) {
       sampleDispatch({
         type: "SET_TRACKS",
         payload: [...sampleState.tracks, track],
