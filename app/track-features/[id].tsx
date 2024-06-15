@@ -65,24 +65,24 @@ export default function TrackFeatures() {
   }
 
   return (
-    <SafeAreaView className="flex-1 items-center bg-[#191414]">
+    <SafeAreaView className="relative flex-1 bg-[#191414]">
       <View className="p-4">
-        <Text className="text-2xl text-gray-400 mb-8 pt-8">Track Features</Text>
-        <Text className="text-gray-400 mb-8">
+        <Text className="text-gray-400 text-2xl mb-4">Track Features</Text>
+        <Text className="text-gray-400">
           This is the Spotify tack analysis of your chosen song. Spotify uses
           these attributes to classify music and suggest new songs to you. You
           can either search for new music based on these attributes as they
           are... or modify them with the sliders below.
         </Text>
-        <StatusBar style="light" />
-        <ScrollView
-          scrollEventThrottle={500}
-          className="pb-[50px]"
-          indicatorStyle="white"
-        >
-          {sliders(trackFeatures)}
-        </ScrollView>
       </View>
+      <ScrollView
+        scrollEventThrottle={500}
+        className="px-4 pb-[50px]"
+        indicatorStyle="white"
+      >
+        {sliders(trackFeatures)}
+      </ScrollView>
+      <StatusBar style="light" />
     </SafeAreaView>
   );
 }
