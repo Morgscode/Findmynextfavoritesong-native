@@ -54,8 +54,8 @@ export default function Recommendations() {
 
   async function likeTrack(track: SpotifyTrackType) {
     if (!authState.token) return;
+    track.preview_url && trackDispatch({ type: "SET_TRACK", payload: track });
     await addTrackToLibrary(authState.token, track);
-    trackDispatch({ type: "SET_TRACK", payload: track });
     Toast.show("Added to library", {
       duration: Toast.durations.SHORT,
       backgroundColor: "#1DB954",
