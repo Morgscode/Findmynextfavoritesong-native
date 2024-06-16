@@ -55,14 +55,6 @@ export default function Recommendations() {
 
   return (
     <SafeAreaView className="relative flex-1 bg-[#191414]">
-      <View className="p-4">
-        <Text className="text-gray-400 text-2xl mb-4">
-          These are your current top tracks.
-        </Text>
-        <Text className="text-gray-400">
-          Choose up to 5 of them to sample similar music.
-        </Text>
-      </View>
       <ScrollView
         scrollEventThrottle={500}
         className="px-4 pb-[50px]"
@@ -91,7 +83,6 @@ export default function Recommendations() {
           </Pressable>
         ))}
       </ScrollView>
-
       <StatusBar style="light" />
     </SafeAreaView>
   );

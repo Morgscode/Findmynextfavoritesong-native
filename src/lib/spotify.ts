@@ -197,7 +197,7 @@ function getRecommendationsRequestParams(
     target_tempo: features.tempo,
     target_time_signature: features.time_signature,
     target_valence: features.valence,
-  };
+  } as unknown as Record<string, string>;
 }
 
 export async function getRecommendations(
@@ -211,9 +211,7 @@ export async function getRecommendations(
     seed_genres,
     features,
   );
-  const query = new URLSearchParams(
-    params as unknown as Record<string, string>,
-  );
+  const query = new URLSearchParams(params);
   try {
     const response = await fetch(
       `${BASE_URL}${RECOMMENDATIONS_ENDPOINT}?${query.toString()}`,
