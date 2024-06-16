@@ -17,8 +17,8 @@ export default function TrackFeatureSlider({
   const info = TRACK_FEATURES_INFO[featureName];
   return (
     <View className="mb-4">
-      <Text className="text-xl text-gray-400 mb-4">
-        {info.name} - {featureValue.toFixed(3)}
+      <Text className="text-lg font-semibold text-white mb-4">
+        {info.name}: {featureValue.toFixed(3)}
       </Text>
       <Text className="text-gray-400 mb-4">{info.description}</Text>
       <Slider

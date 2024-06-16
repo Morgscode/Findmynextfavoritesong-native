@@ -59,8 +59,8 @@ export default function Genres() {
   if (!genres.length) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
-        <Text className="text-2xl text-gray-400 mb-8">
-          Fetching Available Genres...
+        <Text className="text-2xl text-gray-400 font-bold mb-8">
+          Fetching Genres...
         </Text>
         <ActivityIndicator size="large" color="#1DB954" />
         <StatusBar style="light" />
@@ -70,8 +70,8 @@ export default function Genres() {
 
   return (
     <SafeAreaView className="flex-1 bg-[#191414]">
-      <View className="p-4">
-        <Text className="text-gray-400 text-2xl mb-4">
+      <View className="p-4 gap-2">
+        <Text className="text-white text-2xl font-bold">
           Available Seed Genres
         </Text>
         <Text className="text-gray-400">

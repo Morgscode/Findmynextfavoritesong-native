@@ -53,12 +53,13 @@ export default function AppNav() {
       prev: "/",
     },
     "/spotify-tracks": {
-      next: trackState.track
-        ? {
-            pathname: "/track-features/[id]",
-            params: { id: trackState.track.id },
-          }
-        : "/",
+      next:
+        sampleState.tracks.length && trackState.track
+          ? {
+              pathname: "/track-features/[id]",
+              params: { id: trackState.track.id },
+            }
+          : "/",
       prev: "/",
     },
     [`/track-features/${trackState.track?.id}`]: {
@@ -91,7 +92,7 @@ export default function AppNav() {
       setNextAction("/");
       setBackAction("/");
     }
-  }, [trackState.track, path, authState.isLoggedIn]);
+  }, [trackState.track, path, authState.isLoggedIn, sampleState.tracks]);
 
   return (
     <View className="bg-[#191414] flex flex-row items-center justify-between pb-6 px-6 pt-3">

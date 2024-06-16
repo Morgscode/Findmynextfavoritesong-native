@@ -227,7 +227,10 @@ function getRecommendationsRequestParams(
 ): RecommendationsRequestParam {
   return {
     limit,
-    seed_tracks: seed_tracks.map((t) => t.id)[0],
+    seed_tracks: seed_tracks
+      .filter((_, index) => index < 2)
+      .map((t) => t.id)
+      .join(","),
     seed_genres: [...seed_genres].join(","),
     target_acousticness: features.acousticness,
     target_danceability: features.danceability,

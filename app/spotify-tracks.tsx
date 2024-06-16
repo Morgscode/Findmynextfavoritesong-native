@@ -50,9 +50,6 @@ export default function SpotifyTracks() {
           type: "SET_TRACKS",
           payload: [...sampleState.tracks, track],
         });
-    trackState.track &&
-      trackState.track.id !== track.id &&
-      trackDispatch({ type: "SET_TRACK", payload: track });
   }
 
   const isDisabled = (track: SpotifyTrackType) =>
@@ -105,8 +102,8 @@ export default function SpotifyTracks() {
   if (tracks.length === 0) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
-        <Text className="text-2xl text-gray-400 mb-8">
-          Fetching your current top tracks...
+        <Text className="text-2xl font-bold text-gray-400 mb-8">
+          Fetching top tracks...
         </Text>
         <ActivityIndicator size="large" color="#1DB954" />
         <StatusBar style="light" />
@@ -116,13 +113,11 @@ export default function SpotifyTracks() {
 
   return (
     <SafeAreaView className="relative flex-1 bg-[#191414]">
-      <View className="p-4">
-        <Text className="text-gray-400 text-2xl mb-4">
-          These are your current top tracks.
-        </Text>
-        <Text className="text-gray-400">
-          Choose up to 3 of them to sample similar music.
-        </Text>
+      <View className="p-4 gap-2">
+        <Text className="text-white font-bold text-2xl">Top tracks</Text>
+        {tracks.length && (
+          <Text className="text-gray-400">{tracks.length} songs</Text>
+        )}
       </View>
       <ScrollView
         onScroll={({ nativeEvent }) => {
