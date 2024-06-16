@@ -6,6 +6,7 @@ const AUTH_SCOPES =
   "user-read-email%20user-top-read%20user-library-read%20user-library-modify";
 const BASE_URL = "https://api.spotify.com/v1";
 const TRACKS_ENDPOINT = "/me/top/tracks";
+const LIBRARY_ENDPOINT = "/me/tracks";
 const TRACK_FEATURES_ENDPOINT = "/audio-features";
 const RECOMMENDATIONS_ENDPOINT = "/recommendations";
 const SEED_GENRES_ENDPOINT = "/recommendations/available-genre-seeds";
@@ -235,6 +236,30 @@ export async function getRecommendations(
       tracks: [],
       seeds: [],
     };
+  }
+}
+
+export async function addTrackToLibrary(token: string, track: SpotifyTrack) {
+  try {
+    const response = await fetch(`${BASE_URL}${LIBRARY_ENDPOINT}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ ids: [track.id] }),
+    });
+    // eslint-disable-next-line
+    console.log(response.status);
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+    return true;
+  } catch (error) {
+    // eslint-disable-next-line
+    console.error(error);
+    return false;
   }
 }
 
