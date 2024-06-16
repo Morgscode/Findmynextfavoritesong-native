@@ -37,6 +37,11 @@ export default function Recommendations() {
     setRecommendations(tracks);
   }
 
+  async function likeSong(track: SpotifyTrackType) {
+    const { id } = track;
+    return id;
+  }
+
   useEffect(() => {
     fetchRecommendations();
   }, []);
@@ -55,24 +60,13 @@ export default function Recommendations() {
 
   return (
     <SafeAreaView className="relative flex-1 bg-[#191414]">
-      <View className="p-4">
-        <Text className="text-gray-400 text-2xl mb-4">
-          These are your current top tracks.
-        </Text>
-        <Text className="text-gray-400">
-          Choose up to 5 of them to sample similar music.
-        </Text>
-      </View>
       <ScrollView
         scrollEventThrottle={500}
         className="px-4 pb-[50px]"
         indicatorStyle="white"
       >
         {recommendations.map((track) => (
-          <Pressable
-            key={track.id}
-            onPress={() => trackDispatch({ type: "SET_TRACK", payload: track })}
-          >
+          <Pressable key={track.id}>
             <SpotifyTrack
               isSelected={
                 (trackState.track && trackState.track.id === track.id) || false
@@ -80,18 +74,25 @@ export default function Recommendations() {
               {...track}
             >
               <View className="flex flex-row gap-1">
-                <Pressable className="p-2 border-2 border-solid border-gray-400 rounded-lg">
+                <Pressable
+                  onPress={() => likeSong(track)}
+                  className="p-2 border-2 border-solid border-gray-400 rounded-lg"
+                >
                   <Text className="text-gray-400">Like</Text>
                 </Pressable>
-                <Pressable className="p-2 border-2 border-solid border-gray-400 rounded-lg">
-                  <Text className="text-gray-400">Playlist</Text>
+                <Pressable
+                  onPress={() =>
+                    trackDispatch({ type: "SET_TRACK", payload: track })
+                  }
+                  className="p-2 border-2 border-solid border-gray-400 rounded-lg"
+                >
+                  <Text className="text-gray-400">Sample</Text>
                 </Pressable>
               </View>
             </SpotifyTrack>
           </Pressable>
         ))}
       </ScrollView>
-
       <StatusBar style="light" />
     </SafeAreaView>
   );
