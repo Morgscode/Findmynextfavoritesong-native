@@ -48,8 +48,11 @@ export default function SpotifyTracks() {
         })
       : sampleDispatch({
           type: "SET_TRACKS",
-          payload: [...sampleState.tracks, track],
+          payload: [track],
         });
+    trackState.track &&
+      trackState.track.id !== track.id &&
+      trackDispatch({ type: "SET_TRACK", payload: track });
   }
 
   const isCloseToBottom = ({
@@ -76,10 +79,10 @@ export default function SpotifyTracks() {
   const textStyles = (track: SpotifyTrackType) =>
     isSelectedTrack(track) ? "text-[#1DB954]" : "text-gray-400";
 
+  // eslint-disable-next-line
   const isDisabled = (track: SpotifyTrackType) =>
-    (sampleState.tracks.length === 1 && !isSelectedTrack(track)) ||
-    (sampleState.tracks.length + sampleState.genres.length === 5 &&
-      !isSelectedTrack(track));
+    sampleState.tracks.length + sampleState.genres.length === 5 &&
+    !isSelectedTrack(track);
 
   function sampleRedirect(track: SpotifyTrackType) {
     if (
@@ -91,7 +94,7 @@ export default function SpotifyTracks() {
     if (!isSelectedTrack(track)) {
       sampleDispatch({
         type: "SET_TRACKS",
-        payload: [...sampleState.tracks, track],
+        payload: [track],
       });
     }
     router.replace({
@@ -147,7 +150,6 @@ export default function SpotifyTracks() {
             >
               <View className="flex flex-row gap-1">
                 <Pressable
-                  disabled={isDisabled(track)}
                   className={borderStyles(track)}
                   onPress={() => toggleTrack(track)}
                 >
