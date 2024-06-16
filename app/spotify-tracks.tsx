@@ -48,12 +48,16 @@ export default function SpotifyTracks() {
         })
       : sampleDispatch({
           type: "SET_TRACKS",
-          payload: [track],
+          payload: [...sampleState.tracks, track],
         });
     trackState.track &&
       trackState.track.id !== track.id &&
       trackDispatch({ type: "SET_TRACK", payload: track });
   }
+
+  const isDisabled = (track: SpotifyTrackType) =>
+    sampleState.tracks.length === 3 &&
+    !sampleState.tracks.find((t) => t.id === track.id);
 
   const isCloseToBottom = ({
     layoutMeasurement,
@@ -85,7 +89,7 @@ export default function SpotifyTracks() {
     if (!isSelectedTrack(track)) {
       sampleDispatch({
         type: "SET_TRACKS",
-        payload: [track],
+        payload: [...sampleState.tracks, track],
       });
     }
     router.replace({
@@ -143,12 +147,14 @@ export default function SpotifyTracks() {
                 <Pressable
                   className={borderStyles(track)}
                   onPress={() => toggleTrack(track)}
+                  disabled={isDisabled(track)}
                 >
                   <Text className="text-gray-400">Select</Text>
                 </Pressable>
                 <Pressable
                   className="p-2 border-2 border-solid border-gray-400 rounded-lg"
                   onPress={() => sampleRedirect(track)}
+                  disabled={isDisabled(track)}
                 >
                   <Text className="text-gray-400">Sample</Text>
                 </Pressable>
