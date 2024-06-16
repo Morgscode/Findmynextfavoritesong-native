@@ -67,10 +67,14 @@ export default function SpotifyTracks() {
   const isSelectedTrack = (track: SpotifyTrackType) =>
     sampleState.tracks.find((t) => t.id === track.id);
 
-  const isSelectedStyles = (track: SpotifyTrackType) =>
+  const borderStyles = (track: SpotifyTrackType) =>
     isSelectedTrack(track)
       ? "p-2 border-2 border-solid border-[#1DB954] rounded-lg"
       : "p-2 border-2 border-solid border-gray-400 rounded-lg";
+
+  // eslint-disable-next-line
+  const textStyles = (track: SpotifyTrackType) =>
+    isSelectedTrack(track) ? "text-[#1DB954]" : "text-gray-400";
 
   const isDisabled = (track: SpotifyTrackType) =>
     sampleState.tracks.length === 5 && !isSelectedTrack(track);
@@ -133,20 +137,27 @@ export default function SpotifyTracks() {
             key={track.id}
             onPress={() => trackDispatch({ type: "SET_TRACK", payload: track })}
           >
-            <SpotifyTrack {...track}>
-              <Pressable
-                disabled={isDisabled(track)}
-                className={isSelectedStyles(track)}
-                onPress={() => toggleTrack(track)}
-              >
-                <Text className="text-gray-400">Select</Text>
-              </Pressable>
-              <Pressable
-                className="p-2 border-2 border-solid border-gray-400 rounded-lg"
-                onPress={() => sampleRedirect(track)}
-              >
-                <Text className="text-gray-400">Sample</Text>
-              </Pressable>
+            <SpotifyTrack
+              isSelected={
+                (trackState.track && trackState.track.id === track.id) || false
+              }
+              {...track}
+            >
+              <View className="flex flex-row gap-1">
+                <Pressable
+                  disabled={isDisabled(track)}
+                  className={borderStyles(track)}
+                  onPress={() => toggleTrack(track)}
+                >
+                  <Text className="text-gray-400">Select</Text>
+                </Pressable>
+                <Pressable
+                  className="p-2 border-2 border-solid border-gray-400 rounded-lg"
+                  onPress={() => sampleRedirect(track)}
+                >
+                  <Text className="text-gray-400">Sample</Text>
+                </Pressable>
+              </View>
             </SpotifyTrack>
           </Pressable>
         ))}
