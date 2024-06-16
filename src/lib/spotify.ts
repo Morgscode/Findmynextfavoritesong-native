@@ -96,9 +96,41 @@ type TrackFeaturesInfo = {
   [key: string]: TrackFeatureInfo;
 };
 
-// TODO - Type RecommendationsRequestParam
+type RecommendationsRequestParam = {
+  limit: number;
+  seed_tracks: string;
+  seed_genres: string;
+  target_acousticness: number;
+  target_danceability: number;
+  target_duration_ms: number;
+  target_energy: number;
+  target_instrumentalness: number;
+  target_key: number;
+  target_liveness: number;
+  target_loudness: number;
+  target_mode: number;
+  target_speechiness: number;
+  target_tempo: number;
+  target_time_signature: number;
+  target_valence: number;
+};
+
+type RecommendationSeedType = "track" | "artist" | "genre";
+
+type RecommendationSeed = {
+  afterFilteringSize: number;
+  afterRelinkingSize: number;
+  href: string;
+  id: string;
+  initialPoolSize: number;
+  type: RecommendationSeedType;
+};
 
 // TODO - Type Recommendations Return Types
+type RecommendationsResponse = {
+  tracks: Array<SpotifyTrack>;
+  seeds: Array<RecommendationSeed>;
+};
 
 export function getSpotifyAuthUrl() {
   const appReturnUrl = Linking.createURL("/");
@@ -184,7 +216,7 @@ function getRecommendationsRequestParams(
   seed_genres: Array<string>,
   features: TrackFeatures,
   limit: number = 100,
-) {
+): RecommendationsRequestParam {
   return {
     limit,
     seed_tracks: seed_tracks.map((t) => t.id)[0],
@@ -202,7 +234,7 @@ function getRecommendationsRequestParams(
     target_tempo: features.tempo,
     target_time_signature: features.time_signature,
     target_valence: features.valence,
-  } as unknown as Record<string, string>;
+  };
 }
 
 export async function getRecommendations(
@@ -233,8 +265,8 @@ export async function getRecommendations(
     const body = await response.json();
     return {
       tracks: body?.tracks ?? ([] as Array<SpotifyTrack>),
-      seeds: body?.seeds ?? [],
-    };
+      seeds: body?.seeds ?? ([] as Array<RecommendationSeed>),
+    } as RecommendationsResponse;
   } catch (error) {
     return {
       tracks: [],
