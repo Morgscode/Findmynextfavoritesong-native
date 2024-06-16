@@ -7,6 +7,7 @@ const AUTH_SCOPES =
 const BASE_URL = "https://api.spotify.com/v1";
 const TRACKS_ENDPOINT = "/me/top/tracks";
 const TRACK_FEATURES_ENDPOINT = "/audio-features";
+const RECOMMENDATIONS_ENDPOINT = "/recommendations";
 const SEED_GENRES_ENDPOINT = "/recommendations/available-genre-seeds";
 
 type SpotifyImage = {
@@ -170,6 +171,72 @@ export async function getSeedGenres(token: string) {
     // eslint-disable-next-line
     console.error(error);
     return [];
+  }
+}
+
+function getRecommendationsRequestParams(
+  seed_tracks: Array<SpotifyTrack>,
+  seed_genres: Array<string>,
+  features: TrackFeatures,
+  limit: number = 100,
+) {
+  return {
+    limit,
+    seed_tracks: seed_tracks.map((t) => t.id)[0],
+    seed_genres: [...seed_genres].join(","),
+    target_acousticness: features.acousticness,
+    target_danceability: features.danceability,
+    target_duration_ms: features.duration_ms,
+    target_energy: features.energy,
+    target_instrumentalness: features.instrumentalness,
+    target_key: features.key,
+    target_liveness: features.liveness,
+    target_loudness: features.loudness,
+    target_mode: features.mode,
+    target_speechiness: features.speechiness,
+    target_tempo: features.tempo,
+    target_time_signature: features.time_signature,
+    target_valence: features.valence,
+  };
+}
+
+export async function getRecommendations(
+  token: string,
+  seed_tracks: Array<SpotifyTrack>,
+  seed_genres: Array<string>,
+  features: TrackFeatures,
+) {
+  const params = getRecommendationsRequestParams(
+    seed_tracks,
+    seed_genres,
+    features,
+  );
+  const query = new URLSearchParams(
+    params as unknown as Record<string, string>,
+  );
+  try {
+    const response = await fetch(
+      `${BASE_URL}${RECOMMENDATIONS_ENDPOINT}?${query.toString()}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    // eslint-disable-next-line
+    console.log(response.status);
+    const body = await response.json();
+    return {
+      tracks: body?.tracks ?? ([] as Array<SpotifyTrack>),
+      seeds: body?.seeds ?? [],
+    };
+  } catch (error) {
+    return {
+      tracks: [],
+      seeds: [],
+    };
   }
 }
 
