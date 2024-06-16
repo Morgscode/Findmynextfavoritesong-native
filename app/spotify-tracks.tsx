@@ -77,7 +77,9 @@ export default function SpotifyTracks() {
     isSelectedTrack(track) ? "text-[#1DB954]" : "text-gray-400";
 
   const isDisabled = (track: SpotifyTrackType) =>
-    sampleState.tracks.length === 1 && !isSelectedTrack(track);
+    sampleState.tracks.length === 1 ||
+    (sampleState.tracks.length + sampleState.genres.length === 5 &&
+      !isSelectedTrack(track));
 
   function sampleRedirect(track: SpotifyTrackType) {
     if (

@@ -39,7 +39,7 @@ export default function Genres() {
       : "px-2 text-gray-400";
 
   const genreDisabled = (genre: string) =>
-    sampleState.genres.length === 4 &&
+    sampleState.tracks.length + sampleState.genres.length === 5 &&
     sampleState.genres.includes(genre) === false;
 
   const genresSelected = () => sampleState.genres?.length > 0;
@@ -75,8 +75,8 @@ export default function Genres() {
           Available Seed Genres
         </Text>
         <Text className="text-gray-400">
-          Select up to 5 to tell Spotify what genres you want to sample music
-          from.
+          Select up to {5 - sampleState.tracks.length} to tell Spotify what
+          genres you want to sample music from.
         </Text>
         {genresSelected() && (
           <View className="flex flex-row flex-wrap gap-2 mt-1">

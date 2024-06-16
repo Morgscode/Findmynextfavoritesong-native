@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-root-toast";
 import SpotifyTrack from "@src/components/SpotifyTrack";
 import { useAuthContext } from "@src/context/AuthContext";
 import { useSampleContext } from "@src/context/SampleConext";
@@ -55,6 +56,13 @@ export default function Recommendations() {
     if (!authState.token) return;
     await addTrackToLibrary(authState.token, track);
     trackDispatch({ type: "SET_TRACK", payload: track });
+    Toast.show("Added to library", {
+      duration: Toast.durations.SHORT,
+      backgroundColor: "#1DB954",
+      textColor: "#191414",
+      position: Toast.positions.TOP + 50,
+      opacity: 100,
+    });
   }
 
   useEffect(() => {

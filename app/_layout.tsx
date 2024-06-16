@@ -2,6 +2,7 @@ import React from "react";
 import { Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { NativeWindStyleSheet } from "nativewind";
+import { RootSiblingParent } from "react-native-root-siblings";
 import AppNav from "@src/components/AppNav";
 import AudioPlayer from "@src/components/AudioPlayer";
 import { AuthProvider } from "@src/context/AuthContext";
@@ -17,9 +18,11 @@ export default function Layout() {
     <AuthProvider>
       <TrackProvider>
         <SampleProvider>
-          <Slot />
-          <AudioPlayer />
-          <AppNav />
+          <RootSiblingParent>
+            <Slot />
+            <AudioPlayer />
+            <AppNav />
+          </RootSiblingParent>
           <StatusBar style="light" />
         </SampleProvider>
       </TrackProvider>
