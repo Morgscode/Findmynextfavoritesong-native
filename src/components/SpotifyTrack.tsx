@@ -30,7 +30,7 @@ export default function SpotifyTrack({
               </Text>
             </View>
           )}
-          <Text className="text-gray-400 text-sm">
+          <Text className="text-gray-400 text-xs">
             {artists[0].name} - {album.name}
           </Text>
         </View>

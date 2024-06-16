@@ -13,6 +13,7 @@ export default function AudioPlayer() {
   const { state } = useTrackContext();
   const [audio, setAudio] = useState<Audio.Sound>(new Audio.Sound());
   const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
+  const [audioFinished, setAudioFinished] = useState<boolean>(false);
   const [icon, setIcon] = useState<ImageSourcePropType>(
     // eslint-disable-next-line
     require("../../assets/play.png"),
@@ -43,6 +44,7 @@ export default function AudioPlayer() {
               // Update your UI for the playing state
               // eslint-disable-next-line
               setIcon(require("../../assets/pause.png"));
+              setAudioFinished(false);
             } else {
               // Update your UI for the paused state
             }
@@ -55,6 +57,7 @@ export default function AudioPlayer() {
               // The player has just finished playing and will stop. Maybe you want to play something else?
               // eslint-disable-next-line
               setIcon(require("../../assets/play.png"));
+              setAudioFinished(true);
             }
           }
         },
@@ -85,7 +88,10 @@ export default function AudioPlayer() {
   }
 
   async function toggleAudio() {
-    if (status && status.isLoaded && status.isPlaying === false) {
+    if (status && audioFinished) {
+      const newStatus = await audio.replayAsync();
+      setStatus(newStatus);
+    } else if (status && status.isLoaded && status.isPlaying === false) {
       const newStatus = await audio.playAsync();
       setStatus(newStatus);
     } else if (status && status.isLoaded && status.isPlaying) {
