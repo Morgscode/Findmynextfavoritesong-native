@@ -4,9 +4,10 @@ import {
   Text,
   ActivityIndicator,
   ScrollView,
+  Pressable,
   View,
 } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import TrackFeatureSlider from "@src/components/TrackFeatureSlider";
 import { useAuthContext } from "@src/context/AuthContext";
@@ -84,6 +85,13 @@ export default function TrackFeatures() {
       >
         {sliders(sampleState.features)}
       </ScrollView>
+      {sampleState.features && (
+        <Link href="/recommendations" asChild>
+          <Pressable className="rounded-full bg-[#1DB954] p-4 m-4">
+            <Text className="text-[#191414] text-center">Select Genres</Text>
+          </Pressable>
+        </Link>
+      )}
       <StatusBar style="light" />
     </SafeAreaView>
   );

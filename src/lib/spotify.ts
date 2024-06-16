@@ -96,6 +96,10 @@ type TrackFeaturesInfo = {
   [key: string]: TrackFeatureInfo;
 };
 
+// TODO - Type RecommendationsRequestParam
+
+// TODO - Type Recommendations Return Types
+
 export function getSpotifyAuthUrl() {
   const appReturnUrl = Linking.createURL("/");
 
@@ -239,7 +243,13 @@ export async function getRecommendations(
   }
 }
 
-export async function addTrackToLibrary(token: string, track: SpotifyTrack) {
+export async function addTrackToLibrary(
+  token: string,
+  tracks: SpotifyTrack | Array<SpotifyTrack>,
+) {
+  const trackIds = Array.isArray(tracks)
+    ? tracks.map((t) => t.id)
+    : [tracks.id];
   try {
     const response = await fetch(`${BASE_URL}${LIBRARY_ENDPOINT}`, {
       method: "PUT",
@@ -248,7 +258,7 @@ export async function addTrackToLibrary(token: string, track: SpotifyTrack) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ ids: [track.id] }),
+      body: JSON.stringify({ ids: trackIds }),
     });
     // eslint-disable-next-line
     console.log(response.status);
