@@ -73,7 +73,7 @@ export default function Recommendations() {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
         <Text className="text-2xl text-gray-400 mb-8">
-          Finding recommended music to sample...
+          Finding music to sample...
         </Text>
         <ActivityIndicator size="large" color="#1DB954" />
         <StatusBar style="light" />
