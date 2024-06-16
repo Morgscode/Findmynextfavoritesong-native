@@ -15,7 +15,6 @@ import { useSampleContext } from "@src/context/SampleConext";
 import { useTrackContext } from "@src/context/TrackContext";
 import {
   getRecommendations,
-  TrackFeatures,
   addTrackToLibrary,
   type SpotifyTrack as SpotifyTrackType,
 } from "@src/lib/spotify";
@@ -29,12 +28,12 @@ export default function Recommendations() {
   const { state: sampleState } = useSampleContext();
 
   async function fetchRecommendations() {
-    if (!authState.token) return;
+    if (!authState.token || !sampleState.features) return;
     const { tracks } = await getRecommendations(
       authState.token,
       sampleState.tracks,
       sampleState.genres,
-      sampleState.features as TrackFeatures,
+      sampleState.features,
     );
     setRecommendations(tracks);
   }
