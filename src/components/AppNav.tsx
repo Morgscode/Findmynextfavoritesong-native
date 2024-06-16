@@ -74,6 +74,10 @@ export default function AppNav() {
           }
         : "/spotify-tracks",
     },
+    "/recommendations": {
+      next: "/spotify-tracks",
+      prev: "/genres",
+    },
   };
 
   const getAction = (route: string, direction: Direction) =>

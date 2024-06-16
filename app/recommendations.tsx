@@ -37,6 +37,11 @@ export default function Recommendations() {
     setRecommendations(tracks);
   }
 
+  async function likeSong(track: SpotifyTrackType) {
+    const { id } = track;
+    return id;
+  }
+
   useEffect(() => {
     fetchRecommendations();
   }, []);
@@ -61,10 +66,7 @@ export default function Recommendations() {
         indicatorStyle="white"
       >
         {recommendations.map((track) => (
-          <Pressable
-            key={track.id}
-            onPress={() => trackDispatch({ type: "SET_TRACK", payload: track })}
-          >
+          <Pressable key={track.id}>
             <SpotifyTrack
               isSelected={
                 (trackState.track && trackState.track.id === track.id) || false
@@ -72,11 +74,19 @@ export default function Recommendations() {
               {...track}
             >
               <View className="flex flex-row gap-1">
-                <Pressable className="p-2 border-2 border-solid border-gray-400 rounded-lg">
+                <Pressable
+                  onPress={() => likeSong(track)}
+                  className="p-2 border-2 border-solid border-gray-400 rounded-lg"
+                >
                   <Text className="text-gray-400">Like</Text>
                 </Pressable>
-                <Pressable className="p-2 border-2 border-solid border-gray-400 rounded-lg">
-                  <Text className="text-gray-400">Playlist</Text>
+                <Pressable
+                  onPress={() =>
+                    trackDispatch({ type: "SET_TRACK", payload: track })
+                  }
+                  className="p-2 border-2 border-solid border-gray-400 rounded-lg"
+                >
+                  <Text className="text-gray-400">Sample</Text>
                 </Pressable>
               </View>
             </SpotifyTrack>
