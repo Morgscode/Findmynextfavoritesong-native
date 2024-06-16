@@ -154,6 +154,9 @@ export async function getTopTracks(token: string, url: string | null = null) {
     });
     // eslint-disable-next-line
     console.log(response.status);
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
     const body = await response.json();
     return {
       tracks: body?.items as Array<SpotifyTrack>,
@@ -183,6 +186,9 @@ export async function getTrackFeatures(token: string, id: string) {
     );
     // eslint-disable-next-line
     console.log(response.status);
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
     return (await response.json()) as TrackFeatures;
   } catch (error) {
     // eslint-disable-next-line
@@ -202,6 +208,9 @@ export async function getSeedGenres(token: string) {
     });
     // eslint-disable-next-line
     console.log(response.status);
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
     const body = await response.json();
     return body?.genres as Array<string>;
   } catch (error) {
@@ -247,7 +256,7 @@ export async function getRecommendations(
     seed_tracks,
     seed_genres,
     features,
-  );
+  ) as unknown as Record<string, string>;
   const query = new URLSearchParams(params);
   try {
     const response = await fetch(
@@ -262,6 +271,9 @@ export async function getRecommendations(
     );
     // eslint-disable-next-line
     console.log(response.status);
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
     const body = await response.json();
     return {
       tracks: body?.tracks ?? ([] as Array<SpotifyTrack>),
