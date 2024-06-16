@@ -26,7 +26,7 @@ export default function Recommendations() {
   >([]);
   const { state: authState } = useAuthContext();
   const { state: trackState, dispatch: trackDispatch } = useTrackContext();
-  const { state: sampleState, dispatch: sampleDispatch } = useSampleContext();
+  const { state: sampleState } = useSampleContext();
 
   async function fetchRecommendations() {
     if (!authState.token) return;
@@ -37,19 +37,6 @@ export default function Recommendations() {
       sampleState.features as TrackFeatures,
     );
     setRecommendations(tracks);
-  }
-
-  // eslint-disable-next-line
-  function toggleTrack(track: SpotifyTrackType) {
-    sampleState.tracks.find((t) => t.id === track.id)
-      ? sampleDispatch({
-          type: "SET_TRACKS",
-          payload: sampleState.tracks.filter((t) => t.id !== track.id),
-        })
-      : sampleDispatch({
-          type: "SET_TRACKS",
-          payload: [...sampleState.tracks, track],
-        });
   }
 
   async function likeTrack(track: SpotifyTrackType) {
@@ -89,7 +76,13 @@ export default function Recommendations() {
         indicatorStyle="white"
       >
         {recommendations.map((track) => (
-          <Pressable key={track.id}>
+          <Pressable
+            key={track.id}
+            onPress={() =>
+              track.preview_url &&
+              trackDispatch({ type: "SET_TRACK", payload: track })
+            }
+          >
             <SpotifyTrack
               isSelected={
                 (trackState.track && trackState.track.id === track.id) || false
