@@ -86,7 +86,7 @@ export default function TrackFeatures() {
         {sliders(sampleState.features)}
       </ScrollView>
       {sampleState.features && (
-        <Link href="/recommendations" asChild>
+        <Link href="/genres" asChild>
           <Pressable className="rounded-full bg-[#1DB954] p-4 m-4">
             <Text className="text-[#191414] text-center">Select Genres</Text>
           </Pressable>
