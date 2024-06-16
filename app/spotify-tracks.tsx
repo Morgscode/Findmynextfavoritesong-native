@@ -75,15 +75,6 @@ export default function SpotifyTracks() {
       ? "p-2 border-2 border-solid border-[#1DB954] rounded-lg"
       : "p-2 border-2 border-solid border-gray-400 rounded-lg";
 
-  // eslint-disable-next-line
-  const textStyles = (track: SpotifyTrackType) =>
-    isSelectedTrack(track) ? "text-[#1DB954]" : "text-gray-400";
-
-  // eslint-disable-next-line
-  const isDisabled = (track: SpotifyTrackType) =>
-    sampleState.tracks.length + sampleState.genres.length === 5 &&
-    !isSelectedTrack(track);
-
   function sampleRedirect(track: SpotifyTrackType) {
     if (
       !trackState.track ||
@@ -126,7 +117,7 @@ export default function SpotifyTracks() {
           These are your current top tracks.
         </Text>
         <Text className="text-gray-400">
-          Choose up to 5 of them to sample similar music.
+          Choose up to 3 of them to sample similar music.
         </Text>
       </View>
       <ScrollView

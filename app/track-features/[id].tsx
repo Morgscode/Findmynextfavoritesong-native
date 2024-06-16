@@ -74,8 +74,8 @@ export default function TrackFeatures() {
         <Text className="text-gray-400 text-2xl mb-4">Track Features</Text>
         <Text className="text-gray-400">
           Spotify uses these attributes to classify music and suggest new songs
-          to you. Search for new music based on these attributes as they are, or
-          modify them with the sliders below.
+          to you. Sample music based on these as they are, or modify them with
+          the sliders below.
         </Text>
       </View>
       <ScrollView

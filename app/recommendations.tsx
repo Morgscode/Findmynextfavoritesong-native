@@ -26,7 +26,7 @@ export default function Recommendations() {
   >([]);
   const { state: authState } = useAuthContext();
   const { state: trackState, dispatch: trackDispatch } = useTrackContext();
-  const { state: sampleState, dispatch: sampleDispatch } = useSampleContext();
+  const { state: sampleState } = useSampleContext();
 
   async function fetchRecommendations() {
     if (!authState.token) return;
@@ -37,19 +37,6 @@ export default function Recommendations() {
       sampleState.features as TrackFeatures,
     );
     setRecommendations(tracks);
-  }
-
-  // eslint-disable-next-line
-  function toggleTrack(track: SpotifyTrackType) {
-    sampleState.tracks.find((t) => t.id === track.id)
-      ? sampleDispatch({
-          type: "SET_TRACKS",
-          payload: sampleState.tracks.filter((t) => t.id !== track.id),
-        })
-      : sampleDispatch({
-          type: "SET_TRACKS",
-          payload: [...sampleState.tracks, track],
-        });
   }
 
   async function likeTrack(track: SpotifyTrackType) {
@@ -73,7 +60,7 @@ export default function Recommendations() {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
         <Text className="text-2xl text-gray-400 mb-8">
-          Finding recommended music to sample...
+          Finding music to sample...
         </Text>
         <ActivityIndicator size="large" color="#1DB954" />
         <StatusBar style="light" />
@@ -82,14 +69,20 @@ export default function Recommendations() {
   }
 
   return (
-    <SafeAreaView className="relative flex-1 bg-[#191414]">
+    <SafeAreaView className="relative flex-1 bg-[#191414] pt-8">
       <ScrollView
         scrollEventThrottle={500}
         className="px-4 pb-[50px]"
         indicatorStyle="white"
       >
         {recommendations.map((track) => (
-          <Pressable key={track.id}>
+          <Pressable
+            key={track.id}
+            onPress={() =>
+              track.preview_url &&
+              trackDispatch({ type: "SET_TRACK", payload: track })
+            }
+          >
             <SpotifyTrack
               isSelected={
                 (trackState.track && trackState.track.id === track.id) || false
