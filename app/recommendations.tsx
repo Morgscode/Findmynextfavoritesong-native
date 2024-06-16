@@ -82,7 +82,7 @@ export default function Recommendations() {
   }
 
   return (
-    <SafeAreaView className="relative flex-1 bg-[#191414]">
+    <SafeAreaView className="relative flex-1 bg-[#191414] pt-8">
       <ScrollView
         scrollEventThrottle={500}
         className="px-4 pb-[50px]"
