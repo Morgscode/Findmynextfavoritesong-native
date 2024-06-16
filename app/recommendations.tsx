@@ -58,7 +58,7 @@ export default function Recommendations() {
   if (recommendations.length === 0) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
-        <Text className="text-2xl text-gray-400 mb-8">
+        <Text className="text-2xl text-gray-400 text-bold mb-8">
           Finding music to sample...
         </Text>
         <ActivityIndicator size="large" color="#1DB954" />
@@ -69,6 +69,9 @@ export default function Recommendations() {
 
   return (
     <SafeAreaView className="relative flex-1 bg-[#191414] pt-8">
+      <View className="p-4 gap-2">
+        <Text className="text-white text-2xl font-bold">Recommendations</Text>
+      </View>
       <ScrollView
         scrollEventThrottle={500}
         className="px-4 pb-[50px]"

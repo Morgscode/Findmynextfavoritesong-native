@@ -59,7 +59,7 @@ export default function TrackFeatures() {
   if (!sampleState.features) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-[#191414]">
-        <Text className="text-2xl text-gray-400 mb-8">
+        <Text className="text-2xl text-gray-400 font-bold mb-8">
           Fetching the track analysis...
         </Text>
         <ActivityIndicator size="large" color="#1DB954" />
@@ -70,8 +70,10 @@ export default function TrackFeatures() {
 
   return (
     <SafeAreaView className="relative flex-1 bg-[#191414]">
-      <View className="p-4">
-        <Text className="text-gray-400 text-2xl mb-4">Track Features</Text>
+      <View className="p-4 gap-2">
+        <Text className="text-gray-400 text-2xl text-white font-bold">
+          Track Features
+        </Text>
         <Text className="text-gray-400">
           Spotify uses these attributes to classify music and suggest new songs
           to you. Sample music based on these as they are, or modify them with
