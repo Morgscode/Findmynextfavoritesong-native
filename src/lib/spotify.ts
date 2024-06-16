@@ -126,7 +126,6 @@ type RecommendationSeed = {
   type: RecommendationSeedType;
 };
 
-// TODO - Type Recommendations Return Types
 type RecommendationsResponse = {
   tracks: Array<SpotifyTrack>;
   seeds: Array<RecommendationSeed>;
@@ -159,8 +158,8 @@ export async function getTopTracks(token: string, url: string | null = null) {
     }
     const body = await response.json();
     return {
-      tracks: body?.items as Array<SpotifyTrack>,
-      next: (body?.next as string) || null,
+      tracks: body.items as Array<SpotifyTrack>,
+      next: body.next as string,
     };
   } catch (error) {
     // eslint-disable-next-line
@@ -212,7 +211,7 @@ export async function getSeedGenres(token: string) {
       throw new Error(response.statusText);
     }
     const body = await response.json();
-    return body?.genres as Array<string>;
+    return body.genres as Array<string>;
   } catch (error) {
     // eslint-disable-next-line
     console.error(error);
@@ -276,8 +275,8 @@ export async function getRecommendations(
     }
     const body = await response.json();
     return {
-      tracks: body?.tracks ?? ([] as Array<SpotifyTrack>),
-      seeds: body?.seeds ?? ([] as Array<RecommendationSeed>),
+      tracks: body.tracks as Array<SpotifyTrack>,
+      seeds: body.seeds as Array<RecommendationSeed>,
     } as RecommendationsResponse;
   } catch (error) {
     return {
