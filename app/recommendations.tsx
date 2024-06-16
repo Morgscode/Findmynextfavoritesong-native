@@ -15,6 +15,7 @@ import { useTrackContext } from "@src/context/TrackContext";
 import {
   getRecommendations,
   TrackFeatures,
+  addTrackToLibrary,
   type SpotifyTrack as SpotifyTrackType,
 } from "@src/lib/spotify";
 
@@ -24,7 +25,7 @@ export default function Recommendations() {
   >([]);
   const { state: authState } = useAuthContext();
   const { state: trackState, dispatch: trackDispatch } = useTrackContext();
-  const { state: sampleState } = useSampleContext();
+  const { state: sampleState, dispatch: sampleDispatch } = useSampleContext();
 
   async function fetchRecommendations() {
     if (!authState.token) return;
@@ -37,9 +38,23 @@ export default function Recommendations() {
     setRecommendations(tracks);
   }
 
-  async function likeSong(track: SpotifyTrackType) {
-    const { id } = track;
-    return id;
+  // eslint-disable-next-line
+  function toggleTrack(track: SpotifyTrackType) {
+    sampleState.tracks.find((t) => t.id === track.id)
+      ? sampleDispatch({
+          type: "SET_TRACKS",
+          payload: sampleState.tracks.filter((t) => t.id !== track.id),
+        })
+      : sampleDispatch({
+          type: "SET_TRACKS",
+          payload: [...sampleState.tracks, track],
+        });
+  }
+
+  async function likeTrack(track: SpotifyTrackType) {
+    if (!authState.token) return;
+    await addTrackToLibrary(authState.token, track);
+    trackDispatch({ type: "SET_TRACK", payload: track });
   }
 
   useEffect(() => {
@@ -75,19 +90,21 @@ export default function Recommendations() {
             >
               <View className="flex flex-row gap-1">
                 <Pressable
-                  onPress={() => likeSong(track)}
+                  onPress={() => likeTrack(track)}
                   className="p-2 border-2 border-solid border-gray-400 rounded-lg"
                 >
                   <Text className="text-gray-400">Like</Text>
                 </Pressable>
-                <Pressable
-                  onPress={() =>
-                    trackDispatch({ type: "SET_TRACK", payload: track })
-                  }
-                  className="p-2 border-2 border-solid border-gray-400 rounded-lg"
-                >
-                  <Text className="text-gray-400">Sample</Text>
-                </Pressable>
+                {track.preview_url && (
+                  <Pressable
+                    onPress={() =>
+                      trackDispatch({ type: "SET_TRACK", payload: track })
+                    }
+                    className="p-2 border-2 border-solid border-gray-400 rounded-lg"
+                  >
+                    <Text className="text-gray-400">Sample</Text>
+                  </Pressable>
+                )}
               </View>
             </SpotifyTrack>
           </Pressable>
