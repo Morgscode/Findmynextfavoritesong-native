@@ -22,6 +22,7 @@ export default function TrackFeatures() {
   async function fetchTrackFeatures() {
     if (!id) return;
     const trackId = typeof id === "string" ? id : id[0];
+    if (sampleState.features && sampleState.features.id === trackId) return;
     const features = await getTrackFeatures(state.token!, trackId);
     sampleDispatch({
       type: "SET_FEATURES",
@@ -72,10 +73,9 @@ export default function TrackFeatures() {
       <View className="p-4">
         <Text className="text-gray-400 text-2xl mb-4">Track Features</Text>
         <Text className="text-gray-400">
-          This is the Spotify tack analysis of your chosen song. Spotify uses
-          these attributes to classify music and suggest new songs to you. You
-          can either search for new music based on these attributes as they are,
-          or modify them with the sliders below.
+          Spotify uses these attributes to classify music and suggest new songs
+          to you. Search for new music based on these attributes as they are, or
+          modify them with the sliders below.
         </Text>
       </View>
       <ScrollView
