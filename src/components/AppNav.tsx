@@ -3,6 +3,7 @@ import { View, Pressable, Text } from "react-native";
 import { Link, usePathname } from "expo-router";
 import { useAuthContext } from "@src/context/AuthContext";
 import { useTrackContext } from "@src/context/TrackContext";
+import { useSampleContext } from "@src/context/SampleConext";
 import { getSpotifyAuthUrl } from "@src/lib/spotify";
 
 type Route =
@@ -40,6 +41,8 @@ export default function AppNav() {
   const [prevAction, setBackAction] = useState<NavRoute>("/");
   const { state: authState } = useAuthContext();
   const { state: trackState } = useTrackContext();
+  // eslint-disable-next-line
+  const { state: sampleState } = useSampleContext();
   const path = usePathname();
 
   const NAV_ACTIONS: NavActions = {

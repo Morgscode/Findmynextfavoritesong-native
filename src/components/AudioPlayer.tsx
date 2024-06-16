@@ -107,7 +107,7 @@ export default function AudioPlayer() {
 
   return (
     <View className="bg-[#191414]">
-      <View className="flex flex-row items-center bg-[#041A0C] p-2 rounded-lg mx-2">
+      <View className="flex flex-row items-center bg-[#083518] px-4 py-2 rounded-lg mx-2">
         <Image
           style={{ marginRight: 16 }}
           source={{ uri: state.track.album.images[0].url }}
@@ -121,7 +121,7 @@ export default function AudioPlayer() {
           </Text>
         </View>
         <Pressable onPress={() => toggleAudio()} className="ml-auto">
-          <Image source={icon} width={35} />
+          <Image source={icon} width={10} />
         </Pressable>
       </View>
     </View>
