@@ -39,7 +39,7 @@ export default function Genres() {
       : "px-2 text-gray-400";
 
   const genreDisabled = (genre: string) =>
-    sampleState.genres.length === 5 &&
+    sampleState.genres.length === 4 &&
     sampleState.genres.includes(genre) === false;
 
   const genresSelected = () => sampleState.genres?.length > 0;
