@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Pressable, Text } from "react-native";
+import { View, Pressable } from "react-native";
 import { Link, usePathname } from "expo-router";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useAuthContext } from "@src/context/AuthContext";
 import { useTrackContext } from "@src/context/TrackContext";
 import { useSampleContext } from "@src/context/SampleConext";
@@ -68,12 +69,13 @@ export default function AppNav() {
     },
     "/genres": {
       next: "/recommendations",
-      prev: trackState.track
-        ? {
-            pathname: "/track-features/[id]",
-            params: { id: trackState.track.id },
-          }
-        : "/spotify-tracks",
+      prev:
+        sampleState.tracks.length && trackState.track
+          ? {
+              pathname: "/track-features/[id]",
+              params: { id: trackState.track.id },
+            }
+          : "/spotify-tracks",
     },
     "/recommendations": {
       next: "/spotify-tracks",
@@ -97,18 +99,18 @@ export default function AppNav() {
   return (
     <View className="bg-[#191414] flex flex-row items-center justify-between pb-6 px-6 pt-3">
       <Link href="/" asChild>
-        <Pressable className="border-solid border-2 border-gray-400 p-2 rounded-lg">
-          <Text className="text-gray-400">Home</Text>
+        <Pressable className="p-2">
+          <FontAwesome5 name="home" size={24} color="white" />
         </Pressable>
       </Link>
       <Link href={prevAction} asChild>
-        <Pressable className="border-solid border-2 border-gray-400 p-2 rounded-lg">
-          <Text className="text-gray-400">Back</Text>
+        <Pressable className="p-2">
+          <FontAwesome5 name="search" size={24} color="white" />
         </Pressable>
       </Link>
       <Link href={nextAction} asChild>
-        <Pressable className="border-solid border-2 border-gray-400 p-2 rounded-lg">
-          <Text className="text-gray-400">Next</Text>
+        <Pressable className="p-2">
+          <FontAwesome5 name="list-alt" size={24} color="white" />
         </Pressable>
       </Link>
     </View>

@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Toast from "react-native-root-toast";
 import SpotifyTrack from "@src/components/SpotifyTrack";
 import { useAuthContext } from "@src/context/AuthContext";
@@ -51,6 +52,12 @@ export default function Recommendations() {
     });
   }
 
+  const isSelectedTrack = (track: SpotifyTrackType) =>
+    trackState.track && trackState.track.id === track.id;
+
+  const iconColor = (track: SpotifyTrackType) =>
+    isSelectedTrack(track) ? "#1DB954" : "white";
+
   useEffect(() => {
     fetchRecommendations();
   }, []);
@@ -92,20 +99,21 @@ export default function Recommendations() {
               {...track}
             >
               <View className="flex flex-row gap-1">
-                <Pressable
-                  onPress={() => likeTrack(track)}
-                  className="p-2 border-2 border-solid border-gray-400 rounded-lg"
-                >
-                  <Text className="text-gray-400">Like</Text>
+                <Pressable onPress={() => likeTrack(track)} className="p-2">
+                  <FontAwesome5 name="thumbs-up" size={18} color="white" />
                 </Pressable>
                 {track.preview_url && (
                   <Pressable
                     onPress={() =>
                       trackDispatch({ type: "SET_TRACK", payload: track })
                     }
-                    className="p-2 border-2 border-solid border-gray-400 rounded-lg"
+                    className="p-2"
                   >
-                    <Text className="text-gray-400">Sample</Text>
+                    <FontAwesome5
+                      name="headphones-alt"
+                      size={18}
+                      color={iconColor(track)}
+                    />
                   </Pressable>
                 )}
               </View>

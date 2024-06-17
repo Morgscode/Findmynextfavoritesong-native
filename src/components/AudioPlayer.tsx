@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Image,
-  Pressable,
-  type ImageSourcePropType,
-} from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import { Audio, type AVPlaybackStatus } from "expo-av";
 import { useTrackContext } from "@src/context/TrackContext";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 export default function AudioPlayer() {
   const { state } = useTrackContext();
   const [audio, setAudio] = useState<Audio.Sound>(new Audio.Sound());
   const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
   const [audioFinished, setAudioFinished] = useState<boolean>(false);
-  const [icon, setIcon] = useState<ImageSourcePropType>(
-    // eslint-disable-next-line
-    require("../../assets/play.png"),
-  );
+  const [icon, setIcon] = useState<string>("play");
 
   async function getAudio() {
     if (!state.track?.preview_url) return;
@@ -29,7 +21,7 @@ export default function AudioPlayer() {
           if (!playbackStatus.isLoaded) {
             // Update your UI for the unloaded state
             // eslint-disable-next-line
-            setIcon(require("../../assets/pause.png"));
+            setIcon("pause");
             if (playbackStatus.error) {
               //eslint-disable-next-line
               console.error(
@@ -43,7 +35,7 @@ export default function AudioPlayer() {
             if (playbackStatus.isPlaying) {
               // Update your UI for the playing state
               // eslint-disable-next-line
-              setIcon(require("../../assets/pause.png"));
+              setIcon("pause");
               setAudioFinished(false);
             } else {
               // Update your UI for the paused state
@@ -56,7 +48,7 @@ export default function AudioPlayer() {
             if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
               // The player has just finished playing and will stop. Maybe you want to play something else?
               // eslint-disable-next-line
-              setIcon(require("../../assets/play.png"));
+              setIcon("play");
               setAudioFinished(true);
             }
           }
@@ -98,7 +90,7 @@ export default function AudioPlayer() {
       const newStatus = await audio.pauseAsync();
       setStatus(newStatus);
       // eslint-disable-next-line
-      setIcon(require("../../assets/play.png"));
+      setIcon("play");
     }
   }
 
@@ -127,7 +119,7 @@ export default function AudioPlayer() {
           </Text>
         </View>
         <Pressable onPress={() => toggleAudio()} className="ml-auto">
-          <Image source={icon} width={10} />
+          <FontAwesome5 name={icon} size={24} color="white" />
         </Pressable>
       </View>
     </View>
