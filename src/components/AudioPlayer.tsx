@@ -105,7 +105,7 @@ export default function AudioPlayer() {
 
   return (
     <View className="bg-[#191414]">
-      <View className="flex flex-row items-center bg-[#083518] px-4 py-2 rounded-lg mx-2">
+      <View className="flex flex-row items-center bg-[#083518] px-2 py-2 rounded-lg mx-2">
         <Image
           className="mr-4 rounded-lg"
           style={{ marginRight: 16 }}
@@ -119,7 +119,7 @@ export default function AudioPlayer() {
             {state.track.artists[0].name}
           </Text>
         </View>
-        <Pressable onPress={() => toggleAudio()} className="ml-auto">
+        <Pressable onPress={() => toggleAudio()} className="ml-auto mr-4">
           <FontAwesome5 name={icon} size={24} color="white" />
         </Pressable>
       </View>
