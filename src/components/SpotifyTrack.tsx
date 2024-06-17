@@ -19,7 +19,12 @@ export default function SpotifyTrack({
     : "font-bold text-white";
   return (
     <View className="flex flex-row items-center gap-4 py-1 mb-1">
-      <Image source={{ uri: album.images[0].url }} height={50} width={50} />
+      <Image
+        className="rounded-lg"
+        source={{ uri: album.images[0].url }}
+        height={50}
+        width={50}
+      />
       <View className="flex gap-1 mr-auto">
         <Text className={textStyles}>{name}</Text>
         <View className="flex flex-row items-center">
