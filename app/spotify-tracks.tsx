@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { router, Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import SpotifyTrack from "@src/components/SpotifyTrack";
 import { useAuthContext } from "@src/context/AuthContext";
 import { useTrackContext } from "@src/context/TrackContext";
@@ -71,10 +72,8 @@ export default function SpotifyTracks() {
   const isSelectedTrack = (track: SpotifyTrackType) =>
     sampleState.tracks.find((t) => t.id === track.id);
 
-  const borderStyles = (track: SpotifyTrackType) =>
-    isSelectedTrack(track)
-      ? "p-2 border-2 border-solid border-[#1DB954] rounded-lg"
-      : "p-2 border-2 border-solid border-gray-400 rounded-lg";
+  const iconColor = (track: SpotifyTrackType) =>
+    isSelectedTrack(track) ? "#1DB954" : "white";
 
   function sampleRedirect(track: SpotifyTrackType) {
     if (
@@ -140,18 +139,22 @@ export default function SpotifyTracks() {
             >
               <View className="flex flex-row gap-1">
                 <Pressable
-                  className={borderStyles(track)}
+                  className="p-2 flex items-center justify-center"
                   onPress={() => toggleTrack(track)}
                   disabled={isDisabled(track)}
                 >
-                  <Text className="text-gray-400">Select</Text>
+                  <FontAwesome5
+                    name="plus"
+                    size={18}
+                    color={iconColor(track)}
+                  />
                 </Pressable>
                 <Pressable
-                  className="p-2 border-2 border-solid border-gray-400 rounded-lg"
+                  className="p-2"
                   onPress={() => sampleRedirect(track)}
                   disabled={isDisabled(track)}
                 >
-                  <Text className="text-gray-400">Sample</Text>
+                  <FontAwesome5 name="fingerprint" size={18} color="white" />
                 </Pressable>
               </View>
             </SpotifyTrack>

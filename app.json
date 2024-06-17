@@ -31,7 +31,7 @@
       }
     },
     "owner": "lukemakesthings",
-    "plugins": ["expo-router", "expo-asset"],
+    "plugins": ["expo-router", "expo-asset", "expo-font"],
     "scheme": "spotifymusicsampler"
   }
 }
