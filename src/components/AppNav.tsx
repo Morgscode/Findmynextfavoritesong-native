@@ -38,11 +38,10 @@ type NavActions = {
 type Direction = "prev" | "next";
 
 export default function AppNav() {
-  const [nextAction, setNextAction] = useState<NavRoute>("/");
-  const [prevAction, setBackAction] = useState<NavRoute>("/");
+  const [, setNextAction] = useState<NavRoute>("/");
+  const [, setBackAction] = useState<NavRoute>("/");
   const { state: authState } = useAuthContext();
   const { state: trackState } = useTrackContext();
-  // eslint-disable-next-line
   const { state: sampleState } = useSampleContext();
   const path = usePathname();
 
@@ -103,12 +102,7 @@ export default function AppNav() {
           <FontAwesome5 name="home" size={24} color="white" />
         </Pressable>
       </Link>
-      <Link href={prevAction} asChild>
-        <Pressable className="p-2">
-          <FontAwesome5 name="search" size={24} color="white" />
-        </Pressable>
-      </Link>
-      <Link href={nextAction} asChild>
+      <Link href="/spotify-tracks" asChild>
         <Pressable className="p-2">
           <FontAwesome5 name="list-alt" size={24} color="white" />
         </Pressable>

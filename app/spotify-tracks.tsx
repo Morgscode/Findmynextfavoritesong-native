@@ -114,6 +114,9 @@ export default function SpotifyTracks() {
     <SafeAreaView className="relative flex-1 bg-[#191414]">
       <View className="p-4 gap-2">
         <Text className="text-white font-bold text-2xl">Top tracks</Text>
+        <Text className="text-gray-400">
+          Select up to 3 to sample similar music from.
+        </Text>
         {tracks.length && (
           <Text className="text-gray-400">{tracks.length} songs</Text>
         )}
