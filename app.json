@@ -14,7 +14,8 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "UIBackgroundModes": ["audio"]
+      "UIBackgroundModes": ["audio"],
+      "bundleIdentifier": "com.lukemakesthings.spotifymusicsampler"
     },
     "android": {
       "adaptiveIcon": {

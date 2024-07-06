@@ -41,18 +41,6 @@ export default function SpotifyTracks() {
     await getTracks(next);
   }
 
-  function toggleTrack(track: SpotifyTrackType) {
-    sampleState.tracks.find((t) => t.id === track.id)
-      ? sampleDispatch({
-          type: "SET_TRACKS",
-          payload: sampleState.tracks.filter((t) => t.id !== track.id),
-        })
-      : sampleDispatch({
-          type: "SET_TRACKS",
-          payload: [...sampleState.tracks, track],
-        });
-  }
-
   const isDisabled = (track: SpotifyTrackType) =>
     sampleState.tracks.length === 3 &&
     !sampleState.tracks.find((t) => t.id === track.id);
@@ -75,6 +63,18 @@ export default function SpotifyTracks() {
   const iconColor = (track: SpotifyTrackType) =>
     isSelectedTrack(track) ? "#1DB954" : "white";
 
+  function toggleTrack(track: SpotifyTrackType) {
+    sampleState.tracks.find((t) => t.id === track.id)
+      ? sampleDispatch({
+          type: "SET_TRACKS",
+          payload: sampleState.tracks.filter((t) => t.id !== track.id),
+        })
+      : sampleDispatch({
+          type: "SET_TRACKS",
+          payload: [...sampleState.tracks, track],
+        });
+  }
+
   function sampleRedirect(track: SpotifyTrackType) {
     if (
       !trackState.track ||
@@ -82,7 +82,7 @@ export default function SpotifyTracks() {
     ) {
       trackDispatch({ type: "SET_TRACK", payload: track });
     }
-    if (!isSelectedTrack(track)) {
+    if (!isSelectedTrack(track) && sampleState.tracks.length < 3) {
       sampleDispatch({
         type: "SET_TRACKS",
         payload: [...sampleState.tracks, track],
