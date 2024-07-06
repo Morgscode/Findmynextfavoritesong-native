@@ -21,7 +21,7 @@ export default function SpotifyTrack({
     <View className="flex flex-row items-center gap-4 py-1 mb-1">
       <Image
         className="rounded-lg"
-        source={{ uri: album.images[0].url }}
+        source={{ uri: album.images[1]?.url ?? album.images[0]?.url }}
         height={50}
         width={50}
       />

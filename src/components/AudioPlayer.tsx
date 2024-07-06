@@ -109,13 +109,17 @@ export default function AudioPlayer() {
         <Image
           className="mr-4 rounded-lg"
           style={{ marginRight: 16 }}
-          source={{ uri: state.track.album.images[0].url }}
+          source={{
+            uri:
+              state.track.album.images[1]?.url ??
+              state.track.album.images[0]?.url,
+          }}
           height={50}
           width={50}
         />
-        <View className="flex gap-2">
-          <Text className="text-white">{state.track.name}</Text>
-          <Text className="text-white text-sm">
+        <View className="flex gap-2 max-w-full overflow-hidden">
+          <Text className="text-white truncate">{state.track.name}</Text>
+          <Text className="text-white text-sm truncate">
             {state.track.artists[0].name}
           </Text>
         </View>
